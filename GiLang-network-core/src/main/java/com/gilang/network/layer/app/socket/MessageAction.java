@@ -6,7 +6,6 @@ import com.gilang.common.domian.SocketDataPackage;
  * @author gylang
  * data 2022/6/15
  */
-@ActionType(0b1111111)
 public interface MessageAction<T> {
 
     /**

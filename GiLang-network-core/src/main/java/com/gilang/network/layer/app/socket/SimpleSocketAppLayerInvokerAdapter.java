@@ -60,8 +60,8 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
             ActionType actionType = AnnotationUtil.getAnnotation(messageAction.getClass(), ActionType.class);
             if (null != actionType) {
                 // 获取命令类型
-                if (cmdParamTypeMap.containsKey(actionType.cmd())) {
-                    throw new MultiCommandException(Byte.toString(actionType.cmd()));
+                if (cmdParamTypeMap.containsKey(actionType.value())) {
+                    throw new MultiCommandException(Byte.toString(actionType.value()));
                 }
             }
         }
