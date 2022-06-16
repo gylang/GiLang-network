@@ -1,16 +1,14 @@
 package com.gilang.network.layer.app.socket;
 
 import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.util.ByteUtil;
-import cn.hutool.core.util.ReflectUtil;
 import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.common.util.ClassUtils;
 import com.gilang.network.context.ServerContext;
+import com.gilang.network.context.SessionContext;
 import com.gilang.network.exception.MultiCommandException;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
-import com.gilang.network.layer.app.socket.SocketAppLayerInvokerAdapter;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import javafx.util.converter.ByteStringConverter;
+import com.gilang.network.layer.show.PackageTranslator;
+import com.gilang.network.layer.show.TranslatorType;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -21,35 +19,46 @@ import java.util.Map;
  * @author gylang
  * data 2022/6/15
  */
-@ChannelHandler.Sharable
 public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAdapter implements AfterNetWorkContextInitialized {
 
     private Map<Byte, Type> cmdParamTypeMap = new HashMap<>();
+    private Map<Byte, MessageAction> cmdActionMap = new HashMap<>();
+    private Map<Byte, PackageTranslator> packageTranslatorMap = new HashMap<>();
 
     @Override
     public Type resolveInvokeParamType(Byte data) {
-        return null;
+        return cmdParamTypeMap.get(data);
     }
 
     @Override
-    public Object toObject(byte[] bs, Type type) {
-        return null;
+    public Object toObject(byte protocol, byte[] bs, Type type) {
+        PackageTranslator packageTranslator = packageTranslatorMap.get(protocol);
+        if (null == packageTranslator) {
+            return null;
+        }
+        return packageTranslator.toObject(bs, type);
     }
 
     @Override
-    public byte[] toByte(Object object) {
-        return new byte[0];
+    public byte[] toByte(byte protocol, Object object) {
+        PackageTranslator packageTranslator = packageTranslatorMap.get(protocol);
+        if (null == packageTranslator) {
+            return null;
+        }
+        return packageTranslator.toByte(object);
     }
 
     @Override
-    public void dispatch(SocketDataPackage<?> dataPackage) {
+    public void dispatch(SocketDataPackage<?> dataPackage, SessionContext sessionContext) {
 
+        byte cmd = dataPackage.getCmd();
+        MessageAction messageAction = cmdActionMap.get(cmd);
+        if (null == messageAction) {
+            return;
+        }
+        messageAction.doAction(dataPackage, sessionContext);
     }
 
-    @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, SocketDataPackage<?> dataPackage) throws Exception {
-
-    }
 
     @Override
     public void post(ServerContext serverContext) {
@@ -63,11 +72,22 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
                 if (cmdParamTypeMap.containsKey(actionType.value())) {
                     throw new MultiCommandException(Byte.toString(actionType.value()));
                 }
+                Class<?> userClass = ClassUtils.getUserClass(messageAction.getClass());
+                cmdParamTypeMap.put(actionType.value(), ClassUtils.getTypeArgument(userClass));
+                cmdActionMap.put(actionType.value(), messageAction);
             }
         }
+        // 数据编码解码翻译
+        List<PackageTranslator> packageTranslatorList = serverContext.getBeanFactoryContext().getBeanList(PackageTranslator.class);
+        for (PackageTranslator packageTranslator : packageTranslatorList) {
+            TranslatorType translatorType = AnnotationUtil.getAnnotation(packageTranslator.getClass(), TranslatorType.class);
+            if (null != translatorType) {
+                // 获取命令类型
+                packageTranslatorMap.put(translatorType.value(), packageTranslator);
+            }
+        }
+
     }
 
-    public static void main(String[] args) {
-        System.out.println(Byte.toString((byte) 0b11110101));
-    }
+
 }

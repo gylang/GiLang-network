@@ -1,15 +1,18 @@
-package com.gilang.network.socket.ws;
+package com.gilang.network.netty.ws;
 
 import com.gilang.common.domian.DataPackage;
-import com.gilang.common.exception.BaseResultCode;
+import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.network.layer.app.socket.SocketAppLayerInvokerAdapter;
+import com.gilang.network.layer.show.ProtocolUtil;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
-import java.util.Base64;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -24,6 +27,12 @@ public class WebsocketMessageDecoder extends SimpleChannelInboundHandler<Object>
     private static final String URI = "ws://localhost:%d";
 
     private static final ConcurrentHashMap<String, WebSocketServerHandshaker> handShakerMap = new ConcurrentHashMap<>();
+    private final SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
+
+    public WebsocketMessageDecoder(SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
+        this.socketAppLayerInvokerAdapter = socketAppLayerInvokerAdapter;
+    }
+
 
     /**
      * 接收到websocket协议
@@ -115,8 +124,6 @@ public class WebsocketMessageDecoder extends SimpleChannelInboundHandler<Object>
      */
     private void handlerTextWebSocketFrame(ChannelHandlerContext ctx, TextWebSocketFrame frame) {
 
-//        MessageWrap object = JSON.parseObject(frame.text(), MessageWrap.class);
-//        ctx.fireChannelRead(object);
     }
 
     /**
@@ -153,10 +160,26 @@ public class WebsocketMessageDecoder extends SimpleChannelInboundHandler<Object>
     private void handlerBinaryWebSocketFrame(ChannelHandlerContext ctx, BinaryWebSocketFrame frame) {
 
 
-        byte[] data = new byte[frame.content().readableBytes()];
-        frame.content().readBytes(data);
-        DataPackage<?> dataPackage = new DataPackage<>();
-//        DataPackage object = JSON.parseObject(data, MessageWrap.class);
+        ByteBuf content = frame.content();
+        byte bit1 = content.readByte();
+        byte translator = ProtocolUtil.readTranslator(bit1);
+        byte inLabel = ProtocolUtil.readInLabel(bit1);
+        byte cmd = content.readByte();
+        byte bit3 = content.readByte();
+        byte ack = ProtocolUtil.readAck(bit3);
+        byte qos = ProtocolUtil.readQos(bit3);
+        long messageId = content.readLong();
+        short contentLength = content.readShort();
+        ByteBuf bytes = content.readBytes(contentLength);
+        Type type = socketAppLayerInvokerAdapter.resolveInvokeParamType(cmd);
+        Object object = socketAppLayerInvokerAdapter.toObject(translator, bytes.array(), type);
+        SocketDataPackage<Object> dataPackage = new SocketDataPackage<>(object)
+                .translatorType(translator)
+                .inLabel(inLabel)
+                .ack(ack)
+                .qos(qos)
+                .msgId(messageId)
+                .cmd(cmd);
         ctx.fireChannelRead(dataPackage);
     }
 

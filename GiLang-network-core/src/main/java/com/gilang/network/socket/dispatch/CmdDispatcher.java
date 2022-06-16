@@ -1,6 +1,7 @@
 package com.gilang.network.socket.dispatch;
 
 import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.network.context.SessionContext;
 
 /**
  * @author gylang
@@ -12,5 +13,5 @@ public interface CmdDispatcher<T> {
      * 请求分发
      * @param dataPackage 消息数据包
      */
-    void dispatch(T dataPackage);
+    void dispatch(T dataPackage, SessionContext sessionContext);
 }

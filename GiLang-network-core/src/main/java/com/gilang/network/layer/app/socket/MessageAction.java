@@ -1,6 +1,7 @@
 package com.gilang.network.layer.app.socket;
 
 import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.network.context.SessionContext;
 
 /**
  * @author gylang
@@ -13,5 +14,5 @@ public interface MessageAction<T> {
      *
      * @param dataPackage 请求数据包
      */
-    void doAction(SocketDataPackage<T> dataPackage);
+    void doAction(SocketDataPackage<T> dataPackage, SessionContext sessionContext);
 }

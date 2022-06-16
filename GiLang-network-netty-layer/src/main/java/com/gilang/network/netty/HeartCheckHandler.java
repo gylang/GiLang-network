@@ -1,4 +1,4 @@
-package com.gilang.network.layer.session;
+package com.gilang.network.netty;
 
 import com.gilang.network.context.ServerContext;
 import io.netty.channel.ChannelHandlerContext;
