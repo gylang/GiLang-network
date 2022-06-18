@@ -4,9 +4,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * |4bit translatorType|4bit inLabel|8bit cmd|4bit qos|4bit ack|
- * |64bit 64bit                                                |
- * |16bit contentLength |     appContent  ....                 |
+ * |4bit translatorType|4bit inLabel|4bit qos|4bit ack|8bit cmd|
+ * |64bit msgId                                                |
+ * |16bit payloadLength |     appContent  ....                 |
  * |          ........       appContent   ....                 |
  *
  * @author gylang
@@ -22,17 +22,17 @@ public class SocketDataPackage<T> extends DataPackage<T> {
     /** 4bit 用于后续系统内部处理标识 (预留扩展: 系统流转,分布式分发) */
     private byte inLabel;
 
-    /** 8bit 指令类型 因通过二进制方式声明 [0b11111111] */
-    private byte cmd;
-
     /** 4bit 质量标识 */
     private byte qos;
 
     /** 4bit ack标识 */
     private byte ack;
 
+    /** 8bit 指令类型 因通过二进制方式声明 [0b11111111] */
+    private byte cmd;
+
     public SocketDataPackage(T object) {
-        setActBody(object);
+        setPayload(object);
     }
 
 
@@ -67,7 +67,7 @@ public class SocketDataPackage<T> extends DataPackage<T> {
     }
 
     public SocketDataPackage<T> actBody(T actBody) {
-        setActBody(actBody);
+        setPayload(actBody);
         return this;
     }
 }

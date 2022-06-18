@@ -1,4 +1,4 @@
-package com.gilang.network.netty.ws;
+package com.gilang.network.netty.socket;
 
 import com.gilang.network.config.WebsocketConfig;
 import com.gilang.network.context.ServerContext;
@@ -25,11 +25,11 @@ import java.util.concurrent.TimeUnit;
  * data 2020/11/6
  * @version v0.0.1
  */
-public class WebSocketInitializer extends ChannelInitializer<SocketChannel> implements AfterNetWorkContextInitialized {
+public class SocketInitializer extends ChannelInitializer<SocketChannel> implements AfterNetWorkContextInitialized {
 
     private ServerContext serverContext;
     private SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
-    private SocketDispatcherInboundHandler webSocketDispatcherInboundHandler;
+    private SocketDispatcherInboundHandler socketDispatcherInboundHandler;
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
@@ -51,11 +51,10 @@ public class WebSocketInitializer extends ChannelInitializer<SocketChannel> impl
         pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new ChunkedWriteHandler());
         pipeline.addLast(new HttpObjectAggregator(65536));
-        pipeline.addLast(new WebsocketMessageDecoder(socketAppLayerInvokerAdapter));
-        pipeline.addLast(new WebsocketMessageEncoder(socketAppLayerInvokerAdapter));
-        pipeline.addLast("StringDecoder", new StringDecoder(CharsetUtil.UTF_8));
+        pipeline.addLast(new SocketMessageDecoder(socketAppLayerInvokerAdapter));
+        pipeline.addLast(new SocketMessageEncoder(socketAppLayerInvokerAdapter));
         pipeline.addLast("heart", new HeartCheckHandler(serverContext));
-        pipeline.addLast("dispatch", webSocketDispatcherInboundHandler);
+        pipeline.addLast("dispatch", socketDispatcherInboundHandler);
     }
 
 
@@ -63,7 +62,7 @@ public class WebSocketInitializer extends ChannelInitializer<SocketChannel> impl
     public void post(ServerContext serverContext) {
         this.serverContext = serverContext;
         this.socketAppLayerInvokerAdapter = serverContext.getBeanFactoryContext().getPrimaryBean(SocketAppLayerInvokerAdapter.class);
-        this.webSocketDispatcherInboundHandler = serverContext.getBeanFactoryContext().getPrimaryBean(SocketDispatcherInboundHandler.class);
+        this.socketDispatcherInboundHandler = serverContext.getBeanFactoryContext().getPrimaryBean(SocketDispatcherInboundHandler.class);
 
     }
 }

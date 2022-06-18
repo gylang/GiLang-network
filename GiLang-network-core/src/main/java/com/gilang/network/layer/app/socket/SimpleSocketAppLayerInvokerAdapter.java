@@ -19,11 +19,12 @@ import java.util.Map;
  * @author gylang
  * data 2022/6/15
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAdapter implements AfterNetWorkContextInitialized {
 
-    private Map<Byte, Type> cmdParamTypeMap = new HashMap<>();
-    private Map<Byte, MessageAction> cmdActionMap = new HashMap<>();
-    private Map<Byte, PackageTranslator> packageTranslatorMap = new HashMap<>();
+    private final Map<Byte, Type> cmdParamTypeMap = new HashMap<>();
+    private final Map<Byte, MessageAction<?>> cmdActionMap = new HashMap<>();
+    private final Map<Byte, PackageTranslator> packageTranslatorMap = new HashMap<>();
 
     @Override
     public Type resolveInvokeParamType(Byte data) {
@@ -43,7 +44,7 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
     public byte[] toByte(byte protocol, Object object) {
         PackageTranslator packageTranslator = packageTranslatorMap.get(protocol);
         if (null == packageTranslator) {
-            return null;
+            return new byte[0];
         }
         return packageTranslator.toByte(object);
     }
@@ -65,7 +66,7 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
 
         // 解析获取所有的业务类型对应的
         List<MessageAction> messageActionList = serverContext.getBeanFactoryContext().getBeanList(MessageAction.class);
-        for (MessageAction messageAction : messageActionList) {
+        for (MessageAction<?> messageAction : messageActionList) {
             ActionType actionType = AnnotationUtil.getAnnotation(messageAction.getClass(), ActionType.class);
             if (null != actionType) {
                 // 获取命令类型

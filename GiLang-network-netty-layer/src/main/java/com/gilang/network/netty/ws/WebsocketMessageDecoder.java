@@ -164,15 +164,15 @@ public class WebsocketMessageDecoder extends SimpleChannelInboundHandler<Object>
         byte bit1 = content.readByte();
         byte translator = ProtocolUtil.readTranslator(bit1);
         byte inLabel = ProtocolUtil.readInLabel(bit1);
+        byte bit2 = content.readByte();
+        byte ack = ProtocolUtil.readAck(bit2);
+        byte qos = ProtocolUtil.readQos(bit2);
         byte cmd = content.readByte();
-        byte bit3 = content.readByte();
-        byte ack = ProtocolUtil.readAck(bit3);
-        byte qos = ProtocolUtil.readQos(bit3);
         long messageId = content.readLong();
         short contentLength = content.readShort();
-        ByteBuf bytes = content.readBytes(contentLength);
+        ByteBuf payload = content.readBytes(contentLength);
         Type type = socketAppLayerInvokerAdapter.resolveInvokeParamType(cmd);
-        Object object = socketAppLayerInvokerAdapter.toObject(translator, bytes.array(), type);
+        Object object = socketAppLayerInvokerAdapter.toObject(translator, payload.array(), type);
         SocketDataPackage<Object> dataPackage = new SocketDataPackage<>(object)
                 .translatorType(translator)
                 .inLabel(inLabel)

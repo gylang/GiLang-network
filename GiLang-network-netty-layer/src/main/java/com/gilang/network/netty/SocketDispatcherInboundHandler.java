@@ -1,4 +1,4 @@
-package com.gilang.network.netty.ws;
+package com.gilang.network.netty;
 
 import com.gilang.common.domian.SocketDataPackage;
 import com.gilang.network.context.ServerContext;
@@ -14,11 +14,11 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * data 2022/6/16
  */
 @ChannelHandler.Sharable
-public class WebSocketDispatcherInboundHandler extends SimpleChannelInboundHandler<SocketDataPackage<?>> implements AfterNetWorkContextInitialized {
+public class SocketDispatcherInboundHandler extends SimpleChannelInboundHandler<SocketDataPackage<?>> implements AfterNetWorkContextInitialized {
 
     private SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
 
-    public WebSocketDispatcherInboundHandler(SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
+    public SocketDispatcherInboundHandler(SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
         this.socketAppLayerInvokerAdapter = socketAppLayerInvokerAdapter;
     }
 

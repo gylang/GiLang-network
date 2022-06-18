@@ -13,6 +13,6 @@ public class DataPackage<T> {
     private long msgId;
 
     /** 解析后的报文体 */
-    private T actBody;
+    private T payload;
 
 }
