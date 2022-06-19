@@ -50,7 +50,7 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
     }
 
     @Override
-    public void dispatch(SocketDataPackage<?> dataPackage, SessionContext sessionContext) {
+    public void route(SocketDataPackage<?> dataPackage, SessionContext sessionContext) {
 
         byte cmd = dataPackage.getCmd();
         MessageAction messageAction = cmdActionMap.get(cmd);

@@ -25,7 +25,7 @@ public class SocketDispatcherInboundHandler extends SimpleChannelInboundHandler<
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, SocketDataPackage<?> dataPackage) throws Exception {
 
-        socketAppLayerInvokerAdapter.dispatch(dataPackage, new NettySessionContext(channelHandlerContext));
+        socketAppLayerInvokerAdapter.route(dataPackage, new NettySessionContext(channelHandlerContext));
     }
 
     @Override

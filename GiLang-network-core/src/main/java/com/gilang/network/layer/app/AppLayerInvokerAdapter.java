@@ -1,8 +1,7 @@
 package com.gilang.network.layer.app;
 
 import com.gilang.common.domian.SocketDataPackage;
-import com.gilang.network.layer.show.PackageTranslator;
-import com.gilang.network.socket.dispatch.CmdDispatcher;
+import com.gilang.network.socket.router.SocketRouter;
 
 import java.lang.reflect.Type;
 
@@ -10,7 +9,7 @@ import java.lang.reflect.Type;
  * @author gylang
  * data 2022/6/15
  */
-public interface AppLayerInvokerAdapter<T> extends CmdDispatcher<SocketDataPackage<?>> {
+public interface AppLayerInvokerAdapter<T> extends SocketRouter<SocketDataPackage<?>> {
 
     /**
      * 下层传入解析调用的参数类型
