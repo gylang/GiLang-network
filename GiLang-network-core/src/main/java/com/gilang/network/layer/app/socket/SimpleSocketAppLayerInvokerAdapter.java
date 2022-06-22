@@ -1,6 +1,7 @@
 package com.gilang.network.layer.app.socket;
 
 import cn.hutool.core.annotation.AnnotationUtil;
+import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.common.domian.SocketDataPackage;
 import com.gilang.common.util.ClassUtils;
 import com.gilang.network.context.ServerContext;
@@ -25,6 +26,7 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
     private final Map<Byte, Type> cmdParamTypeMap = new HashMap<>();
     private final Map<Byte, MessageAction<?>> cmdActionMap = new HashMap<>();
     private final Map<Byte, PackageTranslator> packageTranslatorMap = new HashMap<>();
+    private SocketDoActionHookHolder actionHookHolder;
 
     @Override
     public Type resolveInvokeParamType(Byte data) {
@@ -46,6 +48,7 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
         if (null == packageTranslator) {
             return new byte[0];
         }
+
         return packageTranslator.toByte(object);
     }
 
@@ -57,7 +60,13 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
         if (null == messageAction) {
             return;
         }
-        messageAction.doAction(dataPackage, sessionContext);
+        if (null != actionHookHolder) {
+            actionHookHolder.doActionBefore(dataPackage, sessionContext, messageAction);
+            messageAction.doAction(dataPackage, sessionContext);
+            actionHookHolder.doActionAfter(dataPackage, sessionContext, messageAction);
+        } else {
+            messageAction.doAction(dataPackage, sessionContext);
+        }
     }
 
 
@@ -65,7 +74,8 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
     public void post(ServerContext serverContext) {
 
         // 解析获取所有的业务类型对应的
-        List<MessageAction> messageActionList = serverContext.getBeanFactoryContext().getBeanList(MessageAction.class);
+        BeanFactoryContext beanFactoryContext = serverContext.getBeanFactoryContext();
+        List<MessageAction> messageActionList = beanFactoryContext.getBeanList(MessageAction.class);
         for (MessageAction<?> messageAction : messageActionList) {
             ActionType actionType = AnnotationUtil.getAnnotation(messageAction.getClass(), ActionType.class);
             if (null != actionType) {
@@ -79,7 +89,7 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
             }
         }
         // 数据编码解码翻译
-        List<PackageTranslator> packageTranslatorList = serverContext.getBeanFactoryContext().getBeanList(PackageTranslator.class);
+        List<PackageTranslator> packageTranslatorList = beanFactoryContext.getBeanList(PackageTranslator.class);
         for (PackageTranslator packageTranslator : packageTranslatorList) {
             TranslatorType translatorType = AnnotationUtil.getAnnotation(packageTranslator.getClass(), TranslatorType.class);
             if (null != translatorType) {
@@ -87,6 +97,7 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
                 packageTranslatorMap.put(translatorType.value(), packageTranslator);
             }
         }
+        actionHookHolder = beanFactoryContext.getPrimaryBean(SocketDoActionHookHolder.class);
 
     }
 
