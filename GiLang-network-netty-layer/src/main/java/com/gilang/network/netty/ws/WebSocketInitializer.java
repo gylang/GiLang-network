@@ -5,7 +5,7 @@ import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
 import com.gilang.network.layer.app.socket.SocketAppLayerInvokerAdapter;
 import com.gilang.network.netty.HeartCheckHandler;
-import com.gilang.network.netty.SocketDispatcherInboundHandler;
+import com.gilang.network.netty.SocketRouterInboundHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -29,7 +29,7 @@ public class WebSocketInitializer extends ChannelInitializer<SocketChannel> impl
 
     private ServerContext serverContext;
     private SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
-    private SocketDispatcherInboundHandler webSocketDispatcherInboundHandler;
+    private SocketRouterInboundHandler webSocketRouterInboundHandler;
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
@@ -55,7 +55,7 @@ public class WebSocketInitializer extends ChannelInitializer<SocketChannel> impl
         pipeline.addLast(new WebsocketMessageEncoder(socketAppLayerInvokerAdapter));
         pipeline.addLast("StringDecoder", new StringDecoder(CharsetUtil.UTF_8));
         pipeline.addLast("heart", new HeartCheckHandler(serverContext));
-        pipeline.addLast("dispatch", webSocketDispatcherInboundHandler);
+        pipeline.addLast("dispatch", webSocketRouterInboundHandler);
     }
 
 
@@ -63,7 +63,7 @@ public class WebSocketInitializer extends ChannelInitializer<SocketChannel> impl
     public void post(ServerContext serverContext) {
         this.serverContext = serverContext;
         this.socketAppLayerInvokerAdapter = serverContext.getBeanFactoryContext().getPrimaryBean(SocketAppLayerInvokerAdapter.class);
-        this.webSocketDispatcherInboundHandler = serverContext.getBeanFactoryContext().getPrimaryBean(SocketDispatcherInboundHandler.class);
+        this.webSocketRouterInboundHandler = serverContext.getBeanFactoryContext().getPrimaryBean(SocketRouterInboundHandler.class);
 
     }
 }

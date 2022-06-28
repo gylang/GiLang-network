@@ -5,16 +5,14 @@ import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
 import com.gilang.network.layer.app.socket.SocketAppLayerInvokerAdapter;
 import com.gilang.network.netty.HeartCheckHandler;
-import com.gilang.network.netty.SocketDispatcherInboundHandler;
+import com.gilang.network.netty.SocketRouterInboundHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-import io.netty.util.CharsetUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +27,7 @@ public class SocketInitializer extends ChannelInitializer<SocketChannel> impleme
 
     private ServerContext serverContext;
     private SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
-    private SocketDispatcherInboundHandler socketDispatcherInboundHandler;
+    private SocketRouterInboundHandler socketRouterInboundHandler;
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
@@ -54,7 +52,7 @@ public class SocketInitializer extends ChannelInitializer<SocketChannel> impleme
         pipeline.addLast(new SocketMessageDecoder(socketAppLayerInvokerAdapter));
         pipeline.addLast(new SocketMessageEncoder(socketAppLayerInvokerAdapter));
         pipeline.addLast("heart", new HeartCheckHandler(serverContext));
-        pipeline.addLast("dispatch", socketDispatcherInboundHandler);
+        pipeline.addLast("dispatch", socketRouterInboundHandler);
     }
 
 
@@ -62,7 +60,7 @@ public class SocketInitializer extends ChannelInitializer<SocketChannel> impleme
     public void post(ServerContext serverContext) {
         this.serverContext = serverContext;
         this.socketAppLayerInvokerAdapter = serverContext.getBeanFactoryContext().getPrimaryBean(SocketAppLayerInvokerAdapter.class);
-        this.socketDispatcherInboundHandler = serverContext.getBeanFactoryContext().getPrimaryBean(SocketDispatcherInboundHandler.class);
+        this.socketRouterInboundHandler = serverContext.getBeanFactoryContext().getPrimaryBean(SocketRouterInboundHandler.class);
 
     }
 }
