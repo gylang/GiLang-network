@@ -18,6 +18,6 @@ public class ServerContext {
 
     private BeanFactoryContext beanFactoryContext;
 
-
+    private PropertiesVisitor propertiesVisitor;
 
 }
