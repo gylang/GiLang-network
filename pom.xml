@@ -5,15 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.gilang</groupId>
-    <artifactId>GiLang-network</artifactId>
+    <artifactId>gilang-network</artifactId>
+    <name>GiLang-network</name>
     <packaging>pom</packaging>
-    <version>${GiLang-network-version}</version>
+    <version>${gilang-network-version}</version>
     <modules>
-        <module>GiLang-network-core</module>
-        <module>GiLang-common</module>
-        <module>GiLang-network-netty-layer</module>
-        <module>GiLang-netty-translator</module>
+        <module>gilang-network-core</module>
+        <module>gilang-common</module>
+        <module>gilang-network-netty-layer</module>
+        <module>gilang-netty-translator</module>
         <module>example</module>
+        <module>gilang-network-starter</module>
 
     </modules>
 
@@ -34,30 +36,30 @@
         <slf4j.version>1.7.30</slf4j.version>
         <netty.version>4.1.44.Final</netty.version>
         <hutool.version>5.6.6</hutool.version>
-        <GiLang-network-version>1.0-SNAPSHOT</GiLang-network-version>
+        <gilang-network-version>1.0-SNAPSHOT</gilang-network-version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.gilang</groupId>
-                <artifactId>GiLang-common</artifactId>
-                <version>${GiLang-network-version}</version>
+                <artifactId>gilang-common</artifactId>
+                <version>${gilang-network-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.gilang</groupId>
-                <artifactId>GiLang-netty-show-protobuf</artifactId>
-                <version>${GiLang-network-version}</version>
+                <artifactId>gilang-netty-show-protobuf</artifactId>
+                <version>${gilang-network-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.gilang</groupId>
-                <artifactId>GiLang-network-core</artifactId>
-                <version>${GiLang-network-version}</version>
+                <artifactId>gilang-network-core</artifactId>
+                <version>${gilang-network-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.gilang</groupId>
-                <artifactId>GiLang-network-netty-layer</artifactId>
-                <version>${GiLang-network-version}</version>
+                <artifactId>gilang-network-netty-layer</artifactId>
+                <version>${gilang-network-version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

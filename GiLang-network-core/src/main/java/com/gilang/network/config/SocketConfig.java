@@ -7,7 +7,7 @@ import lombok.Data;
  * data 2022/5/31
  */
 @Data
-public class WebsocketConfig {
+public class SocketConfig {
 
     /** 设置多久时间内没有读操作(接收客户端数据)触发读超时 */
     private Integer readerIdle;

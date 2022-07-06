@@ -23,12 +23,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * data 2020/11/17
  */
 @Slf4j
-public class SocketMessageDecoder extends ByteToMessageDecoder {
+public class NettySocketMessageDecoder extends ByteToMessageDecoder {
 
 
     private final SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
 
-    public SocketMessageDecoder(SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
+    public NettySocketMessageDecoder(SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
         this.socketAppLayerInvokerAdapter = socketAppLayerInvokerAdapter;
     }
 

@@ -14,10 +14,10 @@ import lombok.Getter;
 @Getter
 public class ServerContext {
 
-    private WebsocketConfig websocketConfig;
 
     private BeanFactoryContext beanFactoryContext;
 
     private PropertiesVisitor propertiesVisitor;
 
+    private String logLevel;
 }

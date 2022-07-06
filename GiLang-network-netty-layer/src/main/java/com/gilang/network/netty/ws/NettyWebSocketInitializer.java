@@ -1,18 +1,20 @@
-package com.gilang.network.netty.socket;
+package com.gilang.network.netty.ws;
 
 import com.gilang.network.config.WebsocketConfig;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
 import com.gilang.network.layer.app.socket.SocketAppLayerInvokerAdapter;
-import com.gilang.network.netty.HeartCheckHandler;
-import com.gilang.network.netty.SocketRouterInboundHandler;
+import com.gilang.network.netty.NettyHeartCheckHandler;
+import com.gilang.network.netty.NettySocketRouterInboundHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.CharsetUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,16 +25,18 @@ import java.util.concurrent.TimeUnit;
  * data 2020/11/6
  * @version v0.0.1
  */
-public class SocketInitializer extends ChannelInitializer<SocketChannel> implements AfterNetWorkContextInitialized {
+
+
+public class NettyWebSocketInitializer extends ChannelInitializer<SocketChannel> implements AfterNetWorkContextInitialized {
 
     private ServerContext serverContext;
     private SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
-    private SocketRouterInboundHandler socketRouterInboundHandler;
+    private NettySocketRouterInboundHandler webNettySocketRouterInboundHandler;
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
 
-        WebsocketConfig websocketConfig = serverContext.getWebsocketConfig();
+        WebsocketConfig websocketConfig = serverContext.getBeanFactoryContext().getBean(WebsocketConfig.class);
         ChannelPipeline pipeline = ch.pipeline();
 
         //空闲检测处理器
@@ -49,10 +53,11 @@ public class SocketInitializer extends ChannelInitializer<SocketChannel> impleme
         pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new ChunkedWriteHandler());
         pipeline.addLast(new HttpObjectAggregator(65536));
-        pipeline.addLast(new SocketMessageDecoder(socketAppLayerInvokerAdapter));
-        pipeline.addLast(new SocketMessageEncoder(socketAppLayerInvokerAdapter));
-        pipeline.addLast("heart", new HeartCheckHandler(serverContext));
-        pipeline.addLast("dispatch", socketRouterInboundHandler);
+        pipeline.addLast(new NettyWebsocketMessageDecoder(socketAppLayerInvokerAdapter));
+        pipeline.addLast(new NettyWebsocketMessageEncoder(socketAppLayerInvokerAdapter));
+        pipeline.addLast("StringDecoder", new StringDecoder(CharsetUtil.UTF_8));
+        pipeline.addLast("heart", new NettyHeartCheckHandler(serverContext));
+        pipeline.addLast("dispatch", webNettySocketRouterInboundHandler);
     }
 
 
@@ -60,7 +65,7 @@ public class SocketInitializer extends ChannelInitializer<SocketChannel> impleme
     public void post(ServerContext serverContext) {
         this.serverContext = serverContext;
         this.socketAppLayerInvokerAdapter = serverContext.getBeanFactoryContext().getPrimaryBean(SocketAppLayerInvokerAdapter.class);
-        this.socketRouterInboundHandler = serverContext.getBeanFactoryContext().getPrimaryBean(SocketRouterInboundHandler.class);
+        this.webNettySocketRouterInboundHandler = serverContext.getBeanFactoryContext().getPrimaryBean(NettySocketRouterInboundHandler.class);
 
     }
 }

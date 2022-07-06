@@ -14,13 +14,10 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * data 2022/6/16
  */
 @ChannelHandler.Sharable
-public class SocketRouterInboundHandler extends SimpleChannelInboundHandler<SocketDataPackage<?>> implements AfterNetWorkContextInitialized {
+public class NettySocketRouterInboundHandler extends SimpleChannelInboundHandler<SocketDataPackage<?>> implements AfterNetWorkContextInitialized {
 
     private SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
 
-    public SocketRouterInboundHandler(SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
-        this.socketAppLayerInvokerAdapter = socketAppLayerInvokerAdapter;
-    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, SocketDataPackage<?> dataPackage) throws Exception {

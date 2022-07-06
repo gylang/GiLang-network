@@ -18,11 +18,11 @@ import java.util.List;
  * @author gylang
  * data 2020/11/17
  */
-public class SocketMessageEncoder extends MessageToMessageEncoder<SocketDataPackage<?>> {
+public class NettySocketMessageEncoder extends MessageToMessageEncoder<SocketDataPackage<?>> {
 
     private final SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
 
-    public SocketMessageEncoder(SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
+    public NettySocketMessageEncoder(SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
         this.socketAppLayerInvokerAdapter = socketAppLayerInvokerAdapter;
     }
 

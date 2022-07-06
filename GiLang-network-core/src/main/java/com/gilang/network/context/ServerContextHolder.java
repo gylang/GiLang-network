@@ -6,10 +6,12 @@ package com.gilang.network.context;
  */
 public class ServerContextHolder {
 
-    private static final ServerContext serverContext = new ServerContext();
-
 
     public static ServerContext instance() {
-        return serverContext;
+        return Holder.serverContext;
+    }
+    private static class Holder {
+        private static final ServerContext serverContext = new ServerContext();
+
     }
 }

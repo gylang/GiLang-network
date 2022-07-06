@@ -1,5 +1,6 @@
 package com.gilang.network.netty;
 
+import com.gilang.network.config.WebsocketConfig;
 import com.gilang.network.context.ServerContext;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -18,16 +19,18 @@ import static io.netty.handler.timeout.IdleState.ALL_IDLE;
  * @version v0.0.1
  */
 @Slf4j
-public class HeartCheckHandler extends ChannelInboundHandlerAdapter {
+public class NettyHeartCheckHandler extends ChannelInboundHandlerAdapter {
 
     private final ServerContext serverContext;
+    private final WebsocketConfig websocketConfig;
 
     /**
      * 重连次数
      */
     private int unRecPingTimes;
 
-    public HeartCheckHandler(ServerContext serverContext) {
+    public NettyHeartCheckHandler(ServerContext serverContext) {
+        this.websocketConfig = serverContext.getBeanFactoryContext().getBean(WebsocketConfig.class);
         this.serverContext = serverContext;
     }
 
@@ -55,7 +58,7 @@ public class HeartCheckHandler extends ChannelInboundHandlerAdapter {
                     eventType = "";
             }
             log.info("客户触发心跳事件: {}", eventType);
-            int retry = serverContext.getWebsocketConfig().getLostConnectRetryNum();
+            int retry = websocketConfig.getLostConnectRetryNum();
             if (ALL_IDLE.equals(event.state())) {
                 if (unRecPingTimes >= retry) {
                     // 连续超过N次未收到client的ping消息，那么关闭该通道，等待client重连

@@ -22,14 +22,14 @@ import java.util.concurrent.ConcurrentHashMap;
  * data 2020/11/17
  */
 @Slf4j
-public class WebsocketMessageDecoder extends SimpleChannelInboundHandler<Object> {
+public class NettyWebsocketMessageDecoder extends SimpleChannelInboundHandler<Object> {
 
     private static final String URI = "ws://localhost:%d";
 
     private static final ConcurrentHashMap<String, WebSocketServerHandshaker> handShakerMap = new ConcurrentHashMap<>();
     private final SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
 
-    public WebsocketMessageDecoder(SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
+    public NettyWebsocketMessageDecoder(SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
         this.socketAppLayerInvokerAdapter = socketAppLayerInvokerAdapter;
     }
 
