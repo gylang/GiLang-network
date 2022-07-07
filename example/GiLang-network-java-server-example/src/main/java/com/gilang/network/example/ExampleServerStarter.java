@@ -1,6 +1,9 @@
 package com.gilang.network.example;
 
-import cn.hutool.core.util.ClassUtil;
+import com.gilang.common.context.BeanFactoryContext;
+import com.gilang.network.context.ServerContext;
+import com.gilang.network.netty.ws.NettyWebsocketServerRunner;
+import com.gilang.network.starter.ContextLoader;
 
 /**
  * @author gylang
@@ -9,8 +12,11 @@ import cn.hutool.core.util.ClassUtil;
 public class ExampleServerStarter {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        ClassUtil.scanPackage();
+        ServerContext serverContext = new ContextLoader().contextLoad();
+        BeanFactoryContext beanFactoryContext = serverContext.getBeanFactoryContext();
+        NettyWebsocketServerRunner websocketServerRunner = new NettyWebsocketServerRunner();
+        websocketServerRunner.start(serverContext);
     }
 }

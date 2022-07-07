@@ -3,6 +3,7 @@ package com.gilang.network.context;
 import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.config.WebsocketConfig;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 启动im服务的上下文对象
@@ -12,6 +13,7 @@ import lombok.Getter;
  */
 
 @Getter
+@Setter
 public class ServerContext {
 
 
@@ -19,5 +21,5 @@ public class ServerContext {
 
     private PropertiesVisitor propertiesVisitor;
 
-    private String logLevel;
+    private String logLevel = "INFO";
 }
