@@ -15,7 +15,7 @@ public class BeanException extends RuntimeException{
     private final String msg;
 
     public BeanException(String beanName, String msg) {
-        super(msg);
+        super(beanName + msg);
         this.beanName = beanName;
         this.msg = msg;
     }

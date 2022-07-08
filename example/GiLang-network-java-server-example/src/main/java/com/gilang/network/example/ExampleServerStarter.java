@@ -1,6 +1,5 @@
 package com.gilang.network.example;
 
-import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.netty.ws.NettyWebsocketServerRunner;
 import com.gilang.network.starter.ContextLoader;
@@ -14,8 +13,9 @@ public class ExampleServerStarter {
 
     public static void main(String[] args) throws Exception {
 
-        ServerContext serverContext = new ContextLoader().contextLoad();
-        BeanFactoryContext beanFactoryContext = serverContext.getBeanFactoryContext();
+        ContextLoader contextLoader = new ContextLoader();
+        contextLoader.setPropertiesPath("gilang.properties");
+        ServerContext serverContext = contextLoader.contextLoad();
         NettyWebsocketServerRunner websocketServerRunner = new NettyWebsocketServerRunner();
         websocketServerRunner.start(serverContext);
     }

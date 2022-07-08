@@ -9,7 +9,7 @@ import cn.hutool.setting.dialect.Props;
  */
 public class PropertiesVisitor {
 
-    private final Props props = new Props();
+    protected final Props props = new Props();
 
     /**
      * 获取基本的数据类型值

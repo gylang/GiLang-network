@@ -3,6 +3,7 @@ package com.gilang.network.starter;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.setting.dialect.Props;
 import com.gilang.common.context.BeanFactoryContext;
+import com.gilang.network.context.PropertiesWrite;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
 import lombok.extern.slf4j.Slf4j;
@@ -18,12 +19,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ContextLoader {
 
-
+    private String propertiesPath = "gilang.properties";
 
     public ServerContext contextLoad() {
         ServerContext serverContext = new ServerContext();
         serverContext.setBeanFactoryContext(new BeanFactoryContext());
-        serverContext.setPropertiesVisitor(null);
+        // 加载配置文件
+        serverContext.setPropertiesVisitor(PropertiesWrite.init(propertiesPath));
         // 加载bean
         List<URL> resources = ClassUtil.getResources("init.properties");
         List<Props> propsList = resources.stream().map(Props::new).collect(Collectors.toList());
@@ -37,5 +39,9 @@ public class ContextLoader {
             afterNetWorkContextInitialized.post(serverContext);
         }
         return serverContext;
+    }
+
+    public void setPropertiesPath(String propertiesPath) {
+        this.propertiesPath = propertiesPath;
     }
 }

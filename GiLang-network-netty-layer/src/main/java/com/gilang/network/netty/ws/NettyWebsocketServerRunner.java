@@ -21,10 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NettyWebsocketServerRunner extends NettyBaseServerRunner {
 
-    private EventLoopGroup workerGroup;
-    private EventLoopGroup bossGroup;
-    private ChannelFuture websocket;
-
     @Override
     public void start(ServerContext serverContext) throws Exception {
 
