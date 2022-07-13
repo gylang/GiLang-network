@@ -155,4 +155,8 @@ public class BeanFactoryContext {
             beanFactoryContextLifecycle.beanRegisterAfter(beanWrapper);
         }
     }
+
+    public String[] getAllBeanName() {
+        return nameIndex.keySet().toArray(new String[0]);
+    }
 }

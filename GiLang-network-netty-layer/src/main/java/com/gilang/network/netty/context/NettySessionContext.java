@@ -36,4 +36,9 @@ public class NettySessionContext extends SessionContext {
     public boolean isRemoved() {
         return context.isRemoved();
     }
+
+    @Override
+    public void write(Object message) {
+        context.writeAndFlush(message);
+    }
 }

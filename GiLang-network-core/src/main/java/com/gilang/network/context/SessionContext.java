@@ -30,4 +30,12 @@ public abstract class SessionContext {
     /** 当前连接是否断开 */
     public abstract boolean isRemoved();
 
+    /**
+     * 写入消息
+     * @param message 写入消息
+     */
+    public abstract void write(Object message);
+
+
+
 }

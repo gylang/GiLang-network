@@ -34,6 +34,8 @@ public class SocketDataPackage<T> extends DataPackage<T> {
     public SocketDataPackage(T object) {
         setPayload(object);
     }
+    public SocketDataPackage() {
+    }
 
 
     public SocketDataPackage<T> translatorType(byte translatorType) {

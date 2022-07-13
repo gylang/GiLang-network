@@ -9,6 +9,7 @@ import com.gilang.network.hook.AfterNetWorkContextInitialized;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class ContextLoader {
         List<Props> propsList = resources.stream().map(Props::new).collect(Collectors.toList());
 
         new BeanLoaderProcess().process(serverContext, propsList);
-        log.debug("serverContext : {}", serverContext);
+        printAllBean(serverContext.getBeanFactoryContext());
         BeanFactoryContext beanFactoryContext = serverContext.getBeanFactoryContext();
         // bean加载完, 执行钩子函数, 回调, 处理注入逻辑
         List<AfterNetWorkContextInitialized> afterNetWorkContextInitializedList = beanFactoryContext.getBeanList(AfterNetWorkContextInitialized.class);
@@ -39,6 +40,14 @@ public class ContextLoader {
             afterNetWorkContextInitialized.post(serverContext);
         }
         return serverContext;
+    }
+
+    private void printAllBean(BeanFactoryContext beanFactoryContext) {
+
+        String[] beanNames = beanFactoryContext.getAllBeanName();
+        for (String name : beanNames) {
+            log.debug("已加载bean: " + name);
+        }
     }
 
     public void setPropertiesPath(String propertiesPath) {

@@ -1,5 +1,6 @@
 package com.gilang.network.layer.show;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,6 +19,9 @@ public class JacksonPackageTranslator implements PackageTranslator {
     @Override
     public Object toObject(byte[] bs, Type type) {
         try {
+            if (ArrayUtil.isEmpty(bs)) {
+                return null;
+            }
             return mapper.readValue(bs, (Class) type);
         } catch (IOException e) {
             throw new RuntimeException("Jackson deserialize exception : " + e.getMessage());
@@ -27,6 +31,9 @@ public class JacksonPackageTranslator implements PackageTranslator {
     @Override
     public byte[] toByte(Object object) {
         try {
+            if (null == object) {
+                return new byte[0];
+            }
             return mapper.writeValueAsBytes(object);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Jackson serialize exception : " + e.getMessage());
