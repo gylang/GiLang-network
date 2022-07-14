@@ -36,7 +36,7 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
     @Override
     public Object toObject(byte protocol, byte[] bs, Type type) {
         PackageTranslator packageTranslator = packageTranslatorMap.get(protocol);
-        if (null == packageTranslator) {
+        if (null == type || null == packageTranslator) {
             return null;
         }
         return packageTranslator.toObject(bs, type);
