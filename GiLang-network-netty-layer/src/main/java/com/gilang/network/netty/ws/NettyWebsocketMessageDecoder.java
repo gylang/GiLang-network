@@ -136,7 +136,7 @@ public class NettyWebsocketMessageDecoder extends SimpleChannelInboundHandler<Ob
         byte ack = Byte.parseByte(CollUtil.get(info, 2));
         byte qos = Byte.parseByte(CollUtil.get(info, 3));
         byte cmd = Byte.parseByte(CollUtil.get(info, 4));
-        long messageId = Byte.parseByte(CollUtil.get(info, 5));
+        long messageId = Long.parseLong(CollUtil.get(info, 5));
         String payload = CollUtil.get(info, 6);
         Type type = socketAppLayerInvokerAdapter.resolveInvokeParamType(cmd);
         Object object = socketAppLayerInvokerAdapter.toObject(translator, StrUtil.bytes(payload, StandardCharsets.UTF_8), type);

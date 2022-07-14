@@ -1,17 +1,21 @@
 package com.gilang.network.layer.show;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.ClassUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author gylang
  * data 2022/6/28
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
+@TranslatorType(0b0010000)
 public class JacksonPackageTranslator implements PackageTranslator {
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -21,6 +25,9 @@ public class JacksonPackageTranslator implements PackageTranslator {
         try {
             if (ArrayUtil.isEmpty(bs)) {
                 return null;
+            }
+            if (ClassUtil.isSimpleValueType((Class<?>) type)) {
+                return Convert.convert(type, new String(bs, StandardCharsets.UTF_8));
             }
             return mapper.readValue(bs, (Class) type);
         } catch (IOException e) {
@@ -33,6 +40,9 @@ public class JacksonPackageTranslator implements PackageTranslator {
         try {
             if (null == object) {
                 return new byte[0];
+            }
+            if (ClassUtil.isSimpleValueType((object.getClass()))) {
+                return Convert.convert(String.class, object).getBytes(StandardCharsets.UTF_8);
             }
             return mapper.writeValueAsBytes(object);
         } catch (JsonProcessingException e) {

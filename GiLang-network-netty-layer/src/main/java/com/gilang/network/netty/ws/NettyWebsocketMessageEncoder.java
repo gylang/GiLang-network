@@ -1,5 +1,7 @@
 package com.gilang.network.netty.ws;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.gilang.common.domian.SocketDataPackage;
 import com.gilang.network.layer.app.socket.SocketAppLayerInvokerAdapter;
 import com.gilang.network.layer.show.ProtocolUtil;
@@ -7,7 +9,10 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -28,7 +33,7 @@ public class NettyWebsocketMessageEncoder extends MessageToMessageEncoder<Socket
     protected void encode(ChannelHandlerContext channelHandlerContext, SocketDataPackage<?> dataPackage, List<Object> list) throws Exception {
         // 判断协议类型
         byte[] bytes = socketAppLayerInvokerAdapter.toByte(dataPackage.getTranslatorType(), dataPackage.getPayload());
-        byte[] pageBytes = ProtocolUtil.writeSocketDataPackage(dataPackage, bytes);
-        list.add(new BinaryWebSocketFrame(Unpooled.copiedBuffer(pageBytes)));
+        String pack = dataPackage.getTranslatorType() + "," + dataPackage.getInLabel() + "," + dataPackage.getAck() + "," + dataPackage.getQos() + "," + dataPackage.getCmd() + "," + dataPackage.getMsgId() + "," + new String(bytes, StandardCharsets.UTF_8);
+        list.add(new TextWebSocketFrame(pack));
     }
 }

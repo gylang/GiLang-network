@@ -57,8 +57,9 @@ public class BeanFactoryContext {
         // todo 多个类型, 选择主要
         if (CollUtil.isNotEmpty(indexs)) {
             Asserts.isFalse(indexs.size() > 1, () -> new BeanException(clazz.getName(), "存在多个bean"));
+            return (T) indexBean.get(CollUtil.getFirst(indexs)).getBean();
         }
-        return (T) indexBean.get(CollUtil.getFirst(indexs)).getBean();
+        return null;
     }
 
     /**

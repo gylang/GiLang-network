@@ -64,19 +64,18 @@ public class ClassUtils extends ClassUtil {
     private static void doResolveAllType(List<Class<?>> types, Class<?> clazz) {
         if (clazz != Object.class) {
             types.add(clazz);
-            if (clazz.getName().contains("$$")) {
-                Class<?> superclass = clazz.getSuperclass();
-                Class<?>[] interfaces = clazz.getInterfaces();
-                if (superclass != null) {
-                    // 被代理类通过接口方式实现, 继承实现, 如cglib
-                    doResolveAllType(types, superclass);
+            Class<?> superclass = clazz.getSuperclass();
+            Class<?>[] interfaces = clazz.getInterfaces();
+            if (superclass != null) {
+                // 被代理类通过接口方式实现, 继承实现, 如cglib
+                doResolveAllType(types, superclass);
 
-                } else if (ArrayUtil.isNotEmpty(interfaces)) {
-                    // 被代理类通过接口方式实现, jdk动态代理
-                    for (Class<?> anInterface : interfaces) {
-                        if (anInterface != null) {
-                            doResolveAllType(types, anInterface);
-                        }
+            }
+            if (ArrayUtil.isNotEmpty(interfaces)) {
+                // 被代理类通过接口方式实现, jdk动态代理
+                for (Class<?> anInterface : interfaces) {
+                    if (anInterface != null) {
+                        doResolveAllType(types, anInterface);
                     }
                 }
             }

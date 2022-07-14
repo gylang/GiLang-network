@@ -3,6 +3,7 @@ package com.gilang.network.example;
 import com.gilang.common.domian.SocketDataPackage;
 import com.gilang.network.context.SessionContext;
 import com.gilang.network.converter.PackageConverter;
+import com.gilang.network.layer.app.socket.ActionType;
 import com.gilang.network.layer.app.socket.MessageAction;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * data 2022/7/8
  */
 @Slf4j
+@ActionType(1)
 public class CallBackAction implements MessageAction<String> {
 
     @Override

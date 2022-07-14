@@ -33,7 +33,7 @@ public class PropertiesVisitor {
      * @return 配置值
      */
     public <T> T getBaseTypeValue(String key, T defaultValue, Class<T> clazz) {
-        return Convert.convert(clazz, props.getStr(key));
+        return Convert.convert(clazz, props.getStr(key), defaultValue);
     }
 
     /**
