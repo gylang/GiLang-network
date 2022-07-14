@@ -1,5 +1,8 @@
 package com.gilang.network.netty.ws;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ByteUtil;
+import cn.hutool.core.util.StrUtil;
 import com.gilang.common.domian.DataPackage;
 import com.gilang.common.domian.SocketDataPackage;
 import com.gilang.network.layer.app.socket.SocketAppLayerInvokerAdapter;
@@ -13,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Type;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -124,6 +129,25 @@ public class NettyWebsocketMessageDecoder extends SimpleChannelInboundHandler<Ob
      */
     private void handlerTextWebSocketFrame(ChannelHandlerContext ctx, TextWebSocketFrame frame) {
 
+        String content = frame.text();
+        List<String> info = StrUtil.split(content, ',', 7);
+        byte translator = Byte.parseByte(CollUtil.get(info, 0));
+        byte inLabel = Byte.parseByte(CollUtil.get(info, 1));
+        byte ack = Byte.parseByte(CollUtil.get(info, 2));
+        byte qos = Byte.parseByte(CollUtil.get(info, 3));
+        byte cmd = Byte.parseByte(CollUtil.get(info, 4));
+        long messageId = Byte.parseByte(CollUtil.get(info, 5));
+        String payload = CollUtil.get(info, 6);
+        Type type = socketAppLayerInvokerAdapter.resolveInvokeParamType(cmd);
+        Object object = socketAppLayerInvokerAdapter.toObject(translator, StrUtil.bytes(payload, StandardCharsets.UTF_8), type);
+        SocketDataPackage<Object> dataPackage = new SocketDataPackage<>(object)
+                .translatorType(translator)
+                .inLabel(inLabel)
+                .ack(ack)
+                .qos(qos)
+                .msgId(messageId)
+                .cmd(cmd);
+        ctx.fireChannelRead(dataPackage);
     }
 
     /**
@@ -160,27 +184,27 @@ public class NettyWebsocketMessageDecoder extends SimpleChannelInboundHandler<Ob
     private void handlerBinaryWebSocketFrame(ChannelHandlerContext ctx, BinaryWebSocketFrame frame) {
 
 
-        ByteBuf content = frame.content();
-        byte bit1 = content.readByte();
-        byte translator = ProtocolUtil.readTranslator(bit1);
-        byte inLabel = ProtocolUtil.readInLabel(bit1);
-        byte bit2 = content.readByte();
-        byte ack = ProtocolUtil.readAck(bit2);
-        byte qos = ProtocolUtil.readQos(bit2);
-        byte cmd = content.readByte();
-        long messageId = content.readLong();
-        short contentLength = content.readShort();
-        ByteBuf payload = content.readBytes(contentLength);
-        Type type = socketAppLayerInvokerAdapter.resolveInvokeParamType(cmd);
-        Object object = socketAppLayerInvokerAdapter.toObject(translator, payload.array(), type);
-        SocketDataPackage<Object> dataPackage = new SocketDataPackage<>(object)
-                .translatorType(translator)
-                .inLabel(inLabel)
-                .ack(ack)
-                .qos(qos)
-                .msgId(messageId)
-                .cmd(cmd);
-        ctx.fireChannelRead(dataPackage);
+//        ByteBuf content = frame.content();
+//        byte bit1 = content.readByte();
+//        byte translator = ProtocolUtil.readTranslator(bit1);
+//        byte inLabel = ProtocolUtil.readInLabel(bit1);
+//        byte bit2 = content.readByte();
+//        byte ack = ProtocolUtil.readAck(bit2);
+//        byte qos = ProtocolUtil.readQos(bit2);
+//        byte cmd = content.readByte();
+//        long messageId = content.readLong();
+//        short contentLength = content.readShort();
+//        ByteBuf payload = content.readBytes(contentLength);
+//        Type type = socketAppLayerInvokerAdapter.resolveInvokeParamType(cmd);
+//        Object object = socketAppLayerInvokerAdapter.toObject(translator, payload.array(), type);
+//        SocketDataPackage<Object> dataPackage = new SocketDataPackage<>(object)
+//                .translatorType(translator)
+//                .inLabel(inLabel)
+//                .ack(ack)
+//                .qos(qos)
+//                .msgId(messageId)
+//                .cmd(cmd);
+//        ctx.fireChannelRead(dataPackage);
     }
 
 
