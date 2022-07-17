@@ -5,6 +5,9 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -18,7 +21,14 @@ import java.nio.charset.StandardCharsets;
 @TranslatorType(0b0010000)
 public class JacksonPackageTranslator implements PackageTranslator {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    public static final ObjectMapper mapper = new ObjectMapper();
+    static {
+        SimpleModule simpleModule = new SimpleModule();
+        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+        mapper.registerModule(simpleModule);
+    }
+
 
     @Override
     public Object toObject(byte[] bs, Type type) {

@@ -1,4 +1,4 @@
-package com.gilang.network.example;
+package com.gilang.network.example.action;
 
 import com.gilang.common.domian.SocketDataPackage;
 import com.gilang.network.context.SessionContext;

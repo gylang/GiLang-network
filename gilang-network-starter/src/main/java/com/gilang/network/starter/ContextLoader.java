@@ -5,7 +5,9 @@ import cn.hutool.setting.dialect.Props;
 import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.context.PropertiesWrite;
 import com.gilang.network.context.ServerContext;
+import com.gilang.network.event.EventContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
+import com.gilang.network.layer.session.SessionManager;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
@@ -39,6 +41,8 @@ public class ContextLoader {
         for (AfterNetWorkContextInitialized afterNetWorkContextInitialized : afterNetWorkContextInitializedList) {
             afterNetWorkContextInitialized.post(serverContext);
         }
+        serverContext.setEventContext(beanFactoryContext.getPrimaryBean(EventContext.class));
+        serverContext.setSessionManager(beanFactoryContext.getPrimaryBean(SessionManager.class));
         return serverContext;
     }
 

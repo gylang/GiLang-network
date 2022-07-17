@@ -31,9 +31,37 @@ public class SocketDataPackage<T> extends DataPackage<T> {
     /** 8bit 指令类型 因通过二进制方式声明 [0b11111111] */
     private byte cmd;
 
+    /**
+     * 单次发送的消息类型
+     *
+     * @return 单次发送
+     */
+    public boolean isAwaySend() {
+        return qos == 0;
+    }
+
+    /**
+     * 确保有一次成功的消息类型
+     *
+     * @return 确保有一次成功
+     */
+    public boolean isOneSend() {
+        return qos == 1;
+    }
+
+    /**
+     * 确保仅有一次成功的消息类型
+     *
+     * @return 确保仅有一次成功
+     */
+    public boolean isOnlyOneSend() {
+        return qos == 1;
+    }
+
     public SocketDataPackage(T object) {
         setPayload(object);
     }
+
     public SocketDataPackage() {
     }
 
@@ -72,4 +100,6 @@ public class SocketDataPackage<T> extends DataPackage<T> {
         setPayload(actBody);
         return this;
     }
+
+
 }

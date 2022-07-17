@@ -18,4 +18,13 @@ public class PackageConverter {
         dataPackage.setMsgId(MessageUtil.nextMsgId());
         return dataPackage;
     }
+
+    public static <T, R> SocketDataPackage<R> copyBase(SocketDataPackage<T> source) {
+        SocketDataPackage<R> dataPackage = new SocketDataPackage<>();
+        dataPackage.setQos(source.getQos());
+        dataPackage.setTranslatorType(source.getTranslatorType());
+        dataPackage.setInLabel(source.getInLabel());
+        dataPackage.setMsgId(source.getMsgId());
+        return dataPackage;
+    }
 }

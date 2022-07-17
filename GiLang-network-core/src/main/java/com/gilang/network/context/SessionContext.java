@@ -12,8 +12,8 @@ public abstract class SessionContext {
     /** 会话id */
     private String id;
 
-    /** 授权之后的用户id */
-    private String userId;
+    /** 授权之后的用户id等 */
+    private String aliasId;
 
     /** 设备类型 */
     private String equipType;

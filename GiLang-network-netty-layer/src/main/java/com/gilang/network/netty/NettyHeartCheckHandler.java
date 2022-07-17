@@ -2,6 +2,7 @@ package com.gilang.network.netty;
 
 import com.gilang.network.config.WebsocketConfig;
 import com.gilang.network.context.ServerContext;
+import com.gilang.network.netty.context.NettySessionContext;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -90,7 +91,16 @@ public class NettyHeartCheckHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
 
-        super.channelRegistered(ctx);
+        NettySessionContext sessionContext = new NettySessionContext(ctx);
+        String sessionKey = ctx.channel().id().asLongText();
+        sessionContext.setId(sessionKey);
+        serverContext.getSessionManager().register(sessionKey, sessionContext);
+    }
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        String sessionKey = ctx.channel().id().asLongText();
+        serverContext.getSessionManager().remove(sessionKey);
     }
 
 }

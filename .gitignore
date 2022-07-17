@@ -1,3 +1,3 @@
 # Project exclude paths
-/gilang-common/target/
-/gilang-network-core/target/
+/.idea/
+**/target/
