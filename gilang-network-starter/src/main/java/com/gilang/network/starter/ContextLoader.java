@@ -38,11 +38,11 @@ public class ContextLoader {
         BeanFactoryContext beanFactoryContext = serverContext.getBeanFactoryContext();
         // bean加载完, 执行钩子函数, 回调, 处理注入逻辑
         List<AfterNetWorkContextInitialized> afterNetWorkContextInitializedList = beanFactoryContext.getBeanList(AfterNetWorkContextInitialized.class);
+        serverContext.setEventContext(beanFactoryContext.getPrimaryBean(EventContext.class));
+        serverContext.setSessionManager(beanFactoryContext.getPrimaryBean(SessionManager.class));
         for (AfterNetWorkContextInitialized afterNetWorkContextInitialized : afterNetWorkContextInitializedList) {
             afterNetWorkContextInitialized.post(serverContext);
         }
-        serverContext.setEventContext(beanFactoryContext.getPrimaryBean(EventContext.class));
-        serverContext.setSessionManager(beanFactoryContext.getPrimaryBean(SessionManager.class));
         return serverContext;
     }
 
