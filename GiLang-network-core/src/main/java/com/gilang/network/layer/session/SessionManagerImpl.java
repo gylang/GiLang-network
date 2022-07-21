@@ -3,8 +3,11 @@ package com.gilang.network.layer.session;
 import cn.hutool.core.map.BiMap;
 import com.gilang.network.context.SessionContext;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * @author gylang
@@ -62,6 +65,11 @@ public class SessionManagerImpl implements SessionManager {
             return sessionContextMap.get(sessionKey);
         }
         return null;
+    }
+
+    @Override
+    public List<SessionContext> querySession(Predicate<SessionContext> query) {
+        return sessionContextMap.values().stream().filter(query).collect(Collectors.toList());
     }
 
 }

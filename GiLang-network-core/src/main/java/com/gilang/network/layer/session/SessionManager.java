@@ -2,6 +2,9 @@ package com.gilang.network.layer.session;
 
 import com.gilang.network.context.SessionContext;
 
+import java.util.List;
+import java.util.function.Predicate;
+
 /**
  * @author gylang
  * data 2022/7/17
@@ -62,4 +65,11 @@ public interface SessionManager {
      * @return 会话上下文
      */
     SessionContext getSessionByAliasKey(String aliasKey);
+
+    /**
+     * 查询符合条件的会话
+     * @param query 条件
+     * @return 会话列表
+     */
+    List<SessionContext> querySession(Predicate<SessionContext> query);
 }

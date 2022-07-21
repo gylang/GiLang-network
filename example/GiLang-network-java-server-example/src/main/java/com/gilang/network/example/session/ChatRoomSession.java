@@ -1,6 +1,6 @@
 package com.gilang.network.example.session;
 
-import com.gilang.network.example.domain.UserInfo;
+import com.gilang.network.example.domain.payload.req.LoginReq;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,14 +11,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ChatRoomSession {
 
-    private Map<String, Map<Long, UserInfo>> chatRoomUserPool = new ConcurrentHashMap<>();
+    private Map<String, Map<Long, LoginReq>> chatRoomUserPool = new ConcurrentHashMap<>();
 
-    public Map<Long, UserInfo> getRoomUsers(String roomKey) {
+    public Map<Long, LoginReq> getRoomUsers(String roomKey) {
         return chatRoomUserPool.get(roomKey);
     }
 
-    public UserInfo getRoomUser(String roomKey, Long userId) {
-        Map<Long, UserInfo> longUserInfoMap = chatRoomUserPool.get(roomKey);
+    public LoginReq getRoomUser(String roomKey, Long userId) {
+        Map<Long, LoginReq> longUserInfoMap = chatRoomUserPool.get(roomKey);
         return null != longUserInfoMap ? longUserInfoMap.get(userId) : null;
     }
 }

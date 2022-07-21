@@ -23,6 +23,8 @@ public abstract class SessionContext {
 
     /** 额外的属性参数 */
     public abstract <T> T attr(String key);
+    /** 额外的属性参数 */
+    public abstract void setAttr(String key, Object attr);
 
     /** 判断是否存在该额外的属性参数 */
     public abstract boolean hasAttr(String key);

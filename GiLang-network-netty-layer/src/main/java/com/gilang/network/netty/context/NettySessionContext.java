@@ -28,6 +28,11 @@ public class NettySessionContext extends SessionContext {
     }
 
     @Override
+    public void setAttr(String key, Object attr) {
+        context.channel().attr(AttributeKey.valueOf(key)).set(attr);
+    }
+
+    @Override
     public boolean hasAttr(String key) {
         return context.channel().hasAttr(AttributeKey.valueOf(key));
     }
