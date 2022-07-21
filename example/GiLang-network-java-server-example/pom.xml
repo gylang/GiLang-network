@@ -31,5 +31,16 @@
             <groupId>com.gilang</groupId>
             <artifactId>gilang-network-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-db</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <!--mysql数据库驱动 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.29</version>
+        </dependency>
     </dependencies>
 </project>
