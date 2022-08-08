@@ -1,9 +1,8 @@
 package com.gilang.network.context;
 
 import com.gilang.common.context.BeanFactoryContext;
-import com.gilang.network.config.WebsocketConfig;
 import com.gilang.network.event.EventContext;
-import com.gilang.network.layer.session.SessionManager;
+import com.gilang.network.layer.session.SocketSessionManager;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +24,7 @@ public class ServerContext {
     /** 事件处理器 */
     private EventContext eventContext;
     /** session会话管理 */
-    private SessionManager sessionManager;
+    private SocketSessionManager socketSessionManager;
 
     protected String logLevel = "INFO";
 }

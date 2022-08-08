@@ -5,7 +5,7 @@ import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.common.domian.SocketDataPackage;
 import com.gilang.common.util.ClassUtils;
 import com.gilang.network.context.ServerContext;
-import com.gilang.network.context.SessionContext;
+import com.gilang.network.context.SocketSessionContext;
 import com.gilang.network.exception.MultiCommandException;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
 import com.gilang.network.layer.show.PackageTranslator;
@@ -21,7 +21,7 @@ import java.util.Map;
  * data 2022/6/15
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAdapter implements AfterNetWorkContextInitialized {
+public class SimpleSocketSocketAppLayerInvokerAdapter extends SocketSocketAppLayerInvokerAdapter implements AfterNetWorkContextInitialized {
 
     private final Map<Byte, Type> cmdParamTypeMap = new HashMap<>();
     private final Map<Byte, MessageAction<?>> cmdActionMap = new HashMap<>();
@@ -53,7 +53,7 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
     }
 
     @Override
-    public void route(SocketDataPackage<?> dataPackage, SessionContext sessionContext) {
+    public void route(SocketDataPackage<?> dataPackage, SocketSessionContext socketSessionContext) {
 
         byte cmd = dataPackage.getCmd();
         MessageAction messageAction = cmdActionMap.get(cmd);
@@ -61,11 +61,11 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketAppLayerInvokerAda
             return;
         }
         if (null != actionHookHolder) {
-            actionHookHolder.doActionBefore(dataPackage, sessionContext, messageAction);
-            messageAction.doAction(dataPackage, sessionContext);
-            actionHookHolder.doActionAfter(dataPackage, sessionContext, messageAction);
+            actionHookHolder.doActionBefore(dataPackage, socketSessionContext, messageAction);
+            messageAction.doAction(dataPackage, socketSessionContext);
+            actionHookHolder.doActionAfter(dataPackage, socketSessionContext, messageAction);
         } else {
-            messageAction.doAction(dataPackage, sessionContext);
+            messageAction.doAction(dataPackage, socketSessionContext);
         }
     }
 

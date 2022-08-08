@@ -1,6 +1,6 @@
 package com.gilang.network.event;
 
-import com.gilang.network.context.SessionContext;
+import com.gilang.network.context.SocketSessionContext;
 import lombok.Getter;
 
 /**
@@ -10,9 +10,9 @@ import lombok.Getter;
 @Getter
 public class RegisterEvent implements Event{
 
-    private final SessionContext sessionContext;
+    private final SocketSessionContext socketSessionContext;
 
-    public RegisterEvent(SessionContext sessionContext) {
-        this.sessionContext = sessionContext;
+    public RegisterEvent(SocketSessionContext socketSessionContext) {
+        this.socketSessionContext = socketSessionContext;
     }
 }

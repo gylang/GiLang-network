@@ -1,6 +1,6 @@
-package com.gilang.network.layer.app;
+package com.gilang.network.layer.app.http;
 
-import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.common.domian.HttpDataPackage;
 import com.gilang.network.socket.router.SocketRouter;
 
 import java.lang.reflect.Type;
@@ -9,7 +9,7 @@ import java.lang.reflect.Type;
  * @author gylang
  * data 2022/6/15
  */
-public interface AppLayerInvokerAdapter<T> extends SocketRouter<SocketDataPackage<?>> {
+public interface HttpAppLayerInvokerAdapter<T> extends SocketRouter<HttpDataPackage<?>> {
 
     /**
      * 下层传入解析调用的参数类型

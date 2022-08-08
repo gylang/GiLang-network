@@ -2,7 +2,7 @@ package com.gilang.network.layer.app.socket;
 
 import com.gilang.common.domian.SocketDataPackage;
 import com.gilang.network.context.ServerContext;
-import com.gilang.network.context.SessionContext;
+import com.gilang.network.context.SocketSessionContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
 
 /**
@@ -15,10 +15,10 @@ public class SocketDoActionHookHolder implements AfterNetWorkContextInitialized 
      * 执行action之前调用
      *
      * @param dataPackage    数据包
-     * @param sessionContext session上下文
+     * @param socketSessionContext session上下文
      * @param messageAction  当前调用的action
      */
-    public  void doActionBefore(SocketDataPackage<?> dataPackage, SessionContext sessionContext, MessageAction<?> messageAction) {
+    public  void doActionBefore(SocketDataPackage<?> dataPackage, SocketSessionContext socketSessionContext, MessageAction<?> messageAction) {
 
     }
 
@@ -26,10 +26,10 @@ public class SocketDoActionHookHolder implements AfterNetWorkContextInitialized 
      * 执行action之后调用
      *
      * @param dataPackage    数据包
-     * @param sessionContext session上下文
+     * @param socketSessionContext session上下文
      * @param messageAction  当前调用的action
      */
-    public  void doActionAfter(SocketDataPackage<?> dataPackage, SessionContext sessionContext, MessageAction<?> messageAction) {
+    public  void doActionAfter(SocketDataPackage<?> dataPackage, SocketSessionContext socketSessionContext, MessageAction<?> messageAction) {
 
     }
 

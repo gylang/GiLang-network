@@ -1,6 +1,6 @@
 package com.gilang.network.netty.context;
 
-import com.gilang.network.context.SessionContext;
+import com.gilang.network.context.SocketSessionContext;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
@@ -11,11 +11,11 @@ import java.util.Optional;
  * @author gylang
  * data 2022/6/16
  */
-public class NettySessionContext extends SessionContext {
+public class NettySocketSessionContext extends SocketSessionContext {
 
     private final ChannelHandlerContext context;
 
-    public NettySessionContext(ChannelHandlerContext context) {
+    public NettySocketSessionContext(ChannelHandlerContext context) {
         this.context = context;
     }
 

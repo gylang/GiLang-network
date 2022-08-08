@@ -6,7 +6,7 @@ import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
 import com.gilang.common.domian.SocketDataPackage;
 import com.gilang.network.context.ServerContext;
-import com.gilang.network.context.SessionContext;
+import com.gilang.network.context.SocketSessionContext;
 import com.gilang.network.converter.PackageConverter;
 import com.gilang.network.example.constant.CodeConst;
 import com.gilang.network.example.domain.db.User;
@@ -29,7 +29,7 @@ public class LoginAction implements MessageAction<LoginReq>, AfterNetWorkContext
 
 
     @Override
-    public void doAction(SocketDataPackage<LoginReq> dataPackage, SessionContext sessionContext) {
+    public void doAction(SocketDataPackage<LoginReq> dataPackage, SocketSessionContext socketSessionContext) {
 
         LoginReq payload = dataPackage.getPayload();
         CompletableFuture.runAsync(() -> {
@@ -45,14 +45,14 @@ public class LoginAction implements MessageAction<LoginReq>, AfterNetWorkContext
                         user.setNickname(entity.getStr("username"));
                         user.setNickname(entity.getStr("nickname"));
                         user.setNickname(entity.getStr("nickname"));
-                        sessionContext.setAttr(User.class.getName(), user);
+                        socketSessionContext.setAttr(User.class.getName(), user);
                         callBack.setPayload(new CodeRes(CodeConst.OK, "登录成功"));
-                        sessionContext.write(callBack);
+                        socketSessionContext.write(callBack);
                         return;
                     }
                 }
                 callBack.setPayload(new CodeRes(CodeConst.FAIL, "登录失败,账号密码错误"));
-                sessionContext.write(callBack);
+                socketSessionContext.write(callBack);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

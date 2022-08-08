@@ -1,17 +1,11 @@
 package com.gilang.network.netty.ws;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import com.gilang.common.domian.SocketDataPackage;
-import com.gilang.network.layer.app.socket.SocketAppLayerInvokerAdapter;
-import com.gilang.network.layer.show.ProtocolUtil;
-import io.netty.buffer.Unpooled;
+import com.gilang.network.layer.app.socket.SocketSocketAppLayerInvokerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -23,9 +17,9 @@ import java.util.List;
  */
 public class NettyWebsocketMessageEncoder extends MessageToMessageEncoder<SocketDataPackage<?>> {
 
-    private final SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
+    private final SocketSocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
 
-    public NettyWebsocketMessageEncoder(SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
+    public NettyWebsocketMessageEncoder(SocketSocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
         this.socketAppLayerInvokerAdapter = socketAppLayerInvokerAdapter;
     }
 

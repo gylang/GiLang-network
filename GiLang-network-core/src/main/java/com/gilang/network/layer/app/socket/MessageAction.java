@@ -1,7 +1,7 @@
 package com.gilang.network.layer.app.socket;
 
 import com.gilang.common.domian.SocketDataPackage;
-import com.gilang.network.context.SessionContext;
+import com.gilang.network.context.SocketSessionContext;
 
 /**
  * 消息体的对象不建议做泛型, 因为处理起来很麻烦, 如果要使用list, 建议在上层加一个包装类
@@ -16,5 +16,5 @@ public interface MessageAction<T> {
      *
      * @param dataPackage 请求数据包
      */
-    void doAction(SocketDataPackage<T> dataPackage, SessionContext sessionContext);
+    void doAction(SocketDataPackage<T> dataPackage, SocketSessionContext socketSessionContext);
 }

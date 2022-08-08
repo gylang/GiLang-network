@@ -1,13 +1,9 @@
 package com.gilang.network.netty.ws;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ByteUtil;
 import cn.hutool.core.util.StrUtil;
-import com.gilang.common.domian.DataPackage;
 import com.gilang.common.domian.SocketDataPackage;
-import com.gilang.network.layer.app.socket.SocketAppLayerInvokerAdapter;
-import com.gilang.network.layer.show.ProtocolUtil;
-import io.netty.buffer.ByteBuf;
+import com.gilang.network.layer.app.socket.SocketSocketAppLayerInvokerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -32,9 +28,9 @@ public class NettyWebsocketMessageDecoder extends SimpleChannelInboundHandler<Ob
     private static final String URI = "ws://localhost:%d";
 
     private static final ConcurrentHashMap<String, WebSocketServerHandshaker> handShakerMap = new ConcurrentHashMap<>();
-    private final SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
+    private final SocketSocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
 
-    public NettyWebsocketMessageDecoder(SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
+    public NettyWebsocketMessageDecoder(SocketSocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter) {
         this.socketAppLayerInvokerAdapter = socketAppLayerInvokerAdapter;
     }
 

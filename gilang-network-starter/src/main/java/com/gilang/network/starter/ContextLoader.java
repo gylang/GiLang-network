@@ -7,11 +7,10 @@ import com.gilang.network.context.PropertiesWrite;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.event.EventContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
-import com.gilang.network.layer.session.SessionManager;
+import com.gilang.network.layer.session.SocketSessionManager;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +38,7 @@ public class ContextLoader {
         // bean加载完, 执行钩子函数, 回调, 处理注入逻辑
         List<AfterNetWorkContextInitialized> afterNetWorkContextInitializedList = beanFactoryContext.getBeanList(AfterNetWorkContextInitialized.class);
         serverContext.setEventContext(beanFactoryContext.getPrimaryBean(EventContext.class));
-        serverContext.setSessionManager(beanFactoryContext.getPrimaryBean(SessionManager.class));
+        serverContext.setSocketSessionManager(beanFactoryContext.getPrimaryBean(SocketSessionManager.class));
         for (AfterNetWorkContextInitialized afterNetWorkContextInitialized : afterNetWorkContextInitializedList) {
             afterNetWorkContextInitialized.post(serverContext);
         }

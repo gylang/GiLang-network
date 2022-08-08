@@ -1,7 +1,7 @@
 package com.gilang.network.hook;
 
 import com.gilang.common.domian.SocketDataPackage;
-import com.gilang.network.context.SessionContext;
+import com.gilang.network.context.SocketSessionContext;
 import com.gilang.network.layer.app.socket.MessageAction;
 
 /**
@@ -18,30 +18,30 @@ public abstract class SocketDoActionHook {
      * 执行action之前调用
      *
      * @param dataPackage    数据包
-     * @param sessionContext session上下文
+     * @param socketSessionContext session上下文
      * @param messageAction  当前调用的action
      */
-    public abstract void doActionBefore(SocketDataPackage<?> dataPackage, SessionContext sessionContext, MessageAction<?> messageAction);
+    public abstract void doActionBefore(SocketDataPackage<?> dataPackage, SocketSessionContext socketSessionContext, MessageAction<?> messageAction);
 
     /**
      * 执行action之后调用
      *
      * @param dataPackage    数据包
-     * @param sessionContext session上下文
+     * @param socketSessionContext session上下文
      * @param messageAction  当前调用的action
      */
-    public abstract void doActionAfter(SocketDataPackage<?> dataPackage, SessionContext sessionContext, MessageAction<?> messageAction);
+    public abstract void doActionAfter(SocketDataPackage<?> dataPackage, SocketSessionContext socketSessionContext, MessageAction<?> messageAction);
 
     /**
      * 执行下一个钩子函数
      *
      * @param dataPackage    数据包
-     * @param sessionContext session上下文
+     * @param socketSessionContext session上下文
      * @param messageAction  当前调用的action
      */
-    public void nextDoActionBefore(SocketDataPackage<?> dataPackage, SessionContext sessionContext, MessageAction<?> messageAction) {
+    public void nextDoActionBefore(SocketDataPackage<?> dataPackage, SocketSessionContext socketSessionContext, MessageAction<?> messageAction) {
         if (null != socketDoActionHook) {
-            socketDoActionHook.doActionBefore(dataPackage, sessionContext, messageAction);
+            socketDoActionHook.doActionBefore(dataPackage, socketSessionContext, messageAction);
         }
     }
 
@@ -49,12 +49,12 @@ public abstract class SocketDoActionHook {
      * 执行下一个钩子函数
      *
      * @param dataPackage    数据包
-     * @param sessionContext session上下文
+     * @param socketSessionContext session上下文
      * @param messageAction  当前调用的action
      */
-    public void nextDoActionAfter(SocketDataPackage<?> dataPackage, SessionContext sessionContext, MessageAction<?> messageAction) {
+    public void nextDoActionAfter(SocketDataPackage<?> dataPackage, SocketSessionContext socketSessionContext, MessageAction<?> messageAction) {
         if (null != socketDoActionHook) {
-            socketDoActionHook.doActionAfter(dataPackage, sessionContext, messageAction);
+            socketDoActionHook.doActionAfter(dataPackage, socketSessionContext, messageAction);
         }
     }
 

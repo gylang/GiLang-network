@@ -7,7 +7,7 @@ import com.gilang.common.domian.SocketDataPackage;
  * @author gylang
  * data 2022/6/16
  */
-public class ProtocolUtil {
+public class SocketProtocolUtil {
 
     /**
      * 协议头部解析payload方式

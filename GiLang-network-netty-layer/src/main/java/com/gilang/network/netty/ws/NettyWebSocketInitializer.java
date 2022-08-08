@@ -3,7 +3,7 @@ package com.gilang.network.netty.ws;
 import com.gilang.network.config.WebsocketConfig;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
-import com.gilang.network.layer.app.socket.SocketAppLayerInvokerAdapter;
+import com.gilang.network.layer.app.socket.SocketSocketAppLayerInvokerAdapter;
 import com.gilang.network.netty.NettyHeartCheckHandler;
 import com.gilang.network.netty.NettySocketRouterInboundHandler;
 import io.netty.channel.ChannelInitializer;
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 public class NettyWebSocketInitializer extends ChannelInitializer<SocketChannel> implements AfterNetWorkContextInitialized {
 
     private ServerContext serverContext;
-    private SocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
+    private SocketSocketAppLayerInvokerAdapter socketAppLayerInvokerAdapter;
     private NettySocketRouterInboundHandler webNettySocketRouterInboundHandler;
 
     @Override
@@ -64,7 +64,7 @@ public class NettyWebSocketInitializer extends ChannelInitializer<SocketChannel>
     @Override
     public void post(ServerContext serverContext) {
         this.serverContext = serverContext;
-        this.socketAppLayerInvokerAdapter = serverContext.getBeanFactoryContext().getPrimaryBean(SocketAppLayerInvokerAdapter.class);
+        this.socketAppLayerInvokerAdapter = serverContext.getBeanFactoryContext().getPrimaryBean(SocketSocketAppLayerInvokerAdapter.class);
         this.webNettySocketRouterInboundHandler = serverContext.getBeanFactoryContext().getPrimaryBean(NettySocketRouterInboundHandler.class);
 
     }
