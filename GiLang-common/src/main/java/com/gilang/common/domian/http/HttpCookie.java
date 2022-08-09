@@ -1,4 +1,4 @@
-package com.gilang.common.domian;
+package com.gilang.common.domian.http;
 
 import lombok.Data;
 

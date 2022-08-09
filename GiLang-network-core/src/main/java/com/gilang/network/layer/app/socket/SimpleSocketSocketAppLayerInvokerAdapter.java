@@ -2,7 +2,7 @@ package com.gilang.network.layer.app.socket;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import com.gilang.common.context.BeanFactoryContext;
-import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.common.domian.socket.SocketDataPackage;
 import com.gilang.common.util.ClassUtils;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.context.SocketSessionContext;

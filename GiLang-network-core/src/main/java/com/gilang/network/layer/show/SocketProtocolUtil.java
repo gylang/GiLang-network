@@ -1,7 +1,7 @@
 package com.gilang.network.layer.show;
 
 import cn.hutool.core.util.ByteUtil;
-import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.common.domian.socket.SocketDataPackage;
 
 /**
  * @author gylang

@@ -1,5 +1,6 @@
-package com.gilang.common.domian;
+package com.gilang.common.domian.socket;
 
+import com.gilang.common.domian.DataPackage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

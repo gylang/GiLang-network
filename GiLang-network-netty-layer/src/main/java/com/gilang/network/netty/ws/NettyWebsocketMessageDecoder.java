@@ -2,7 +2,7 @@ package com.gilang.network.netty.ws;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.common.domian.socket.SocketDataPackage;
 import com.gilang.network.layer.app.socket.SocketSocketAppLayerInvokerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

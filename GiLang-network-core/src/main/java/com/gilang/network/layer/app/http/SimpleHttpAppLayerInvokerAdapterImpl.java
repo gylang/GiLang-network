@@ -1,6 +1,6 @@
 package com.gilang.network.layer.app.http;
 
-import com.gilang.common.domian.HttpDataPackage;
+import com.gilang.common.domian.http.HttpDataRequest;
 import com.gilang.network.context.SocketSessionContext;
 
 import java.lang.reflect.Type;
@@ -9,18 +9,18 @@ import java.lang.reflect.Type;
  * @author gylang
  * data 2022/8/8
  */
-public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvokerAdapter<HttpDataPackage<?>> {
+public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvokerAdapter<HttpDataRequest<?>> {
 
 
 
 
     @Override
-    public void route(HttpDataPackage<?> dataPackage, SocketSessionContext socketSessionContext) {
+    public void route(HttpDataRequest<?> dataPackage, SocketSessionContext socketSessionContext) {
 
     }
 
     @Override
-    public Type resolveInvokeParamType(HttpDataPackage<?> data) {
+    public Type resolveInvokeParamType(HttpDataRequest<?> data) {
         return null;
     }
 

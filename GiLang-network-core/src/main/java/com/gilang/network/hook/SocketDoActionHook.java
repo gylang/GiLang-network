@@ -1,6 +1,6 @@
 package com.gilang.network.hook;
 
-import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.common.domian.socket.SocketDataPackage;
 import com.gilang.network.context.SocketSessionContext;
 import com.gilang.network.layer.app.socket.MessageAction;
 

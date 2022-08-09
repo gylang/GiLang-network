@@ -1,6 +1,8 @@
-package com.gilang.common.domian;
+package com.gilang.common.domian.http;
 
 import cn.hutool.core.collection.CollUtil;
+import com.gilang.common.domian.DataPackage;
+import com.gilang.common.domian.http.HttpCookie;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,7 +17,7 @@ import java.util.Map;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class HttpDataPackage<T> extends DataPackage<T> {
+public class HttpDataRequest<T> extends DataPackage<T> {
 
 
     /** url query参数 */
@@ -33,7 +35,8 @@ public class HttpDataPackage<T> extends DataPackage<T> {
     /** 远程服务ip */
     private String remoteHost;
 
-
+    /** 路径参数 */
+    private Map<String, String> pathVariables = new HashMap<>();
     /**
      * 设置请求内容类型
      *

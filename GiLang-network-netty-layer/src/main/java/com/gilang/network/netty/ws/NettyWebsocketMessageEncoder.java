@@ -1,6 +1,6 @@
 package com.gilang.network.netty.ws;
 
-import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.common.domian.socket.SocketDataPackage;
 import com.gilang.network.layer.app.socket.SocketSocketAppLayerInvokerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;

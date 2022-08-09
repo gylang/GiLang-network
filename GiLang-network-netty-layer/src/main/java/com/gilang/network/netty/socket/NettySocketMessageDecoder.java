@@ -1,6 +1,6 @@
 package com.gilang.network.netty.socket;
 
-import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.common.domian.socket.SocketDataPackage;
 import com.gilang.network.layer.app.socket.SocketSocketAppLayerInvokerAdapter;
 import com.gilang.network.layer.show.SocketProtocolUtil;
 import io.netty.buffer.ByteBuf;

@@ -1,6 +1,6 @@
 package com.gilang.network.layer.app.socket;
 
-import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.common.domian.socket.SocketDataPackage;
 import com.gilang.network.socket.router.SocketRouter;
 
 import java.lang.reflect.Type;

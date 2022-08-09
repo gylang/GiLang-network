@@ -1,6 +1,6 @@
 package com.gilang.network.converter;
 
-import com.gilang.common.domian.SocketDataPackage;
+import com.gilang.common.domian.socket.SocketDataPackage;
 import com.gilang.network.util.MessageUtil;
 
 /**
