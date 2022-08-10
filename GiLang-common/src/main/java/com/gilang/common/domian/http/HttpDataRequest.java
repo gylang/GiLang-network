@@ -19,6 +19,8 @@ import java.util.Map;
 @Data
 public class HttpDataRequest<T> extends DataPackage<T> {
 
+    /** 请求uri */
+    private String uri;
 
     /** url query参数 */
     private Map<String, String> query;
