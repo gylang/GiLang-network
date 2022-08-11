@@ -1,6 +1,7 @@
 package com.gilang.network.layer.app.socket;
 
 import cn.hutool.core.annotation.AnnotationUtil;
+import com.gilang.common.annotation.SocketActionType;
 import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.common.domian.socket.SocketDataPackage;
 import com.gilang.common.util.ClassUtils;
@@ -9,7 +10,7 @@ import com.gilang.network.context.SocketSessionContext;
 import com.gilang.network.exception.MultiCommandException;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
 import com.gilang.network.layer.show.PackageTranslator;
-import com.gilang.network.layer.show.TranslatorType;
+import com.gilang.common.annotation.TranslatorType;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -77,15 +78,15 @@ public class SimpleSocketSocketAppLayerInvokerAdapter extends SocketSocketAppLay
         BeanFactoryContext beanFactoryContext = serverContext.getBeanFactoryContext();
         List<MessageAction> messageActionList = beanFactoryContext.getBeanList(MessageAction.class);
         for (MessageAction<?> messageAction : messageActionList) {
-            ActionType actionType = AnnotationUtil.getAnnotation(messageAction.getClass(), ActionType.class);
-            if (null != actionType) {
+            SocketActionType socketActionType = AnnotationUtil.getAnnotation(messageAction.getClass(), SocketActionType.class);
+            if (null != socketActionType) {
                 // 获取命令类型
-                if (cmdParamTypeMap.containsKey(actionType.value())) {
-                    throw new MultiCommandException(Byte.toString(actionType.value()));
+                if (cmdParamTypeMap.containsKey(socketActionType.value())) {
+                    throw new MultiCommandException(Byte.toString(socketActionType.value()));
                 }
                 Class<?> userClass = ClassUtils.getUserClass(messageAction.getClass());
-                cmdParamTypeMap.put(actionType.value(), ClassUtils.getTypeArgument(userClass));
-                cmdActionMap.put(actionType.value(), messageAction);
+                cmdParamTypeMap.put(socketActionType.value(), ClassUtils.getTypeArgument(userClass));
+                cmdActionMap.put(socketActionType.value(), messageAction);
             }
         }
         // 数据编码解码翻译

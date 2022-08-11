@@ -12,7 +12,7 @@ import com.gilang.network.example.constant.CodeConst;
 import com.gilang.network.example.domain.db.User;
 import com.gilang.network.example.domain.payload.res.CodeRes;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
-import com.gilang.network.layer.app.socket.ActionType;
+import com.gilang.common.annotation.SocketActionType;
 import com.gilang.network.layer.app.socket.MessageAction;
 
 import java.sql.SQLException;
@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
  * @author gylang
  * data 2022/7/17
  */
-@ActionType(4)
+@SocketActionType(4)
 public class RegisterAction implements MessageAction<User>, AfterNetWorkContextInitialized {
 
 

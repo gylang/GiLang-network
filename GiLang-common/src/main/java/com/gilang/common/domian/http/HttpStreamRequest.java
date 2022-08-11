@@ -1,15 +1,14 @@
 package com.gilang.common.domian.http;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.URLUtil;
 import com.gilang.common.domian.DataPackage;
-import com.gilang.common.domian.http.HttpCookie;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author gylang
@@ -17,7 +16,7 @@ import java.util.*;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class HttpDataRequest<T> extends DataPackage<T> {
+public class HttpStreamRequest<T> extends DataPackage<T> {
 
     /** 请求uri */
     private String uri;
@@ -39,7 +38,6 @@ public class HttpDataRequest<T> extends DataPackage<T> {
 
     /** 路径参数 */
     private Map<String, String> pathVariables = new HashMap<>();
-
     /**
      * 设置请求内容类型
      *
@@ -50,21 +48,6 @@ public class HttpDataRequest<T> extends DataPackage<T> {
         header.put("content-type", Collections.singletonList(contentType));
     }
 
-    public void setHeader(String header, String value) {
-        this.header.computeIfAbsent(header, k -> new ArrayList<>()).add(value);
-    }
-
-    public void setCookie(HttpCookie value) {
-        this.cookies.put(value.getName(), value);
-    }
-
-    public HttpDataRequest() {
-    }
-
-    public HttpDataRequest(T t) {
-        this.setPayload(t);
-    }
-
     /**
      * 请求内容类型
      *
@@ -73,15 +56,5 @@ public class HttpDataRequest<T> extends DataPackage<T> {
     public String contentType() {
 
         return CollUtil.getFirst(header.get("content-type"));
-    }
-
-    public String getPathVariable(String key) {
-        return pathVariables.get(key);
-    }
-    public String getPathDecodeVariable(String key, String charset) {
-        return URLUtil.decode(getPathVariable(key), charset);
-    }
-    public String getPathDecodeVariable(String key) {
-        return URLUtil.decode(getPathVariable(key), StandardCharsets.UTF_8);
     }
 }

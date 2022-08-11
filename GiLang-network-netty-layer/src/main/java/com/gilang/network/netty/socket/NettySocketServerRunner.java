@@ -2,14 +2,9 @@ package com.gilang.network.netty.socket;
 
 import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.config.SocketConfig;
-import com.gilang.network.config.WebsocketConfig;
 import com.gilang.network.context.ServerContext;
-import com.gilang.network.layer.access.ServerRunner;
 import com.gilang.network.netty.NettyBaseServerRunner;
-import com.gilang.network.netty.ws.NettyWebSocketInitializer;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
@@ -41,14 +36,14 @@ public class NettySocketServerRunner extends NettyBaseServerRunner {
                 .handler(new LoggingHandler(LogLevel.valueOf(serverContext.getLogLevel())))
                 .childHandler(beanFactoryContext.getPrimaryBean(NettySocketInitializer.class));
 
-        websocket = serverBootstrap
+        channel = serverBootstrap
                 .bind(socketConfig.getPort())
                 .sync();
         // 监听服务启动
-        websocket.syncUninterruptibly().channel().newSucceededFuture()
+        channel.syncUninterruptibly().channel().newSucceededFuture()
                 .addListener(f -> log.info("[socket]服务启动成功, 端口:{}", socketConfig.getPort()));
         // 监听服务关闭
-        websocket.channel().closeFuture().addListener(future -> {
+        channel.channel().closeFuture().addListener(future -> {
             log.info("socket服务关闭");
             this.destroy(bossGroup, workerGroup);
         });

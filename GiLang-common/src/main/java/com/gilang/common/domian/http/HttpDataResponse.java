@@ -5,10 +5,7 @@ import com.gilang.common.domian.DataPackage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author gylang
@@ -20,6 +17,8 @@ public class HttpDataResponse extends DataPackage<Object> {
 
     /** 响应状态码 */
     private Integer status;
+
+
 
     /** 请求头 */
     private Map<String, List<String>> header = new HashMap<>();
@@ -36,6 +35,10 @@ public class HttpDataResponse extends DataPackage<Object> {
     public void setContentType(String contentType) {
 
         header.put("content-type", Collections.singletonList(contentType));
+    }
+
+    public void setHeader(String header, String value) {
+       this.header.computeIfAbsent(header, k-> new ArrayList<>()).add(value);
     }
 
     /**

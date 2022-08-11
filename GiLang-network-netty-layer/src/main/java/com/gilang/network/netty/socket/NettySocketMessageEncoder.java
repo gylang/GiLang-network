@@ -2,7 +2,7 @@ package com.gilang.network.netty.socket;
 
 import com.gilang.common.domian.socket.SocketDataPackage;
 import com.gilang.network.layer.app.socket.SocketSocketAppLayerInvokerAdapter;
-import com.gilang.network.layer.show.SocketProtocolUtil;
+import com.gilang.network.layer.show.http.SocketProtocolUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;

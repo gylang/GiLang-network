@@ -13,11 +13,11 @@ public abstract class NettyBaseServerRunner implements ServerRunner {
 
     protected EventLoopGroup workerGroup;
     protected EventLoopGroup bossGroup;
-    protected ChannelFuture websocket;
+    protected ChannelFuture channel;
 
     @Override
     public void close(ServerContext serverContext) {
-        websocket.channel().close();
+        channel.channel().close();
     }
 
     /**

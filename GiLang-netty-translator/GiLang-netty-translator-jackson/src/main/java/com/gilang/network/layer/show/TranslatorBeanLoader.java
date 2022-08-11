@@ -14,5 +14,6 @@ public class TranslatorBeanLoader implements BeanLoader {
     public void scan(ServerContext serverContext) {
         BeanFactoryContext beanFactoryContext = serverContext.getBeanFactoryContext();
         beanFactoryContext.register(JacksonPackageTranslator.class.getName(), new JacksonPackageTranslator());
+        beanFactoryContext.register(HttpJsonTranslator.class.getName(), new HttpJsonTranslator());
     }
 }

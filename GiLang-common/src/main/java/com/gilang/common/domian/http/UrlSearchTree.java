@@ -140,7 +140,7 @@ public class UrlSearchTree<T> {
         private String uri;
 
         /** 变量 */
-        private Map<Integer, String> variable;
+        private Map<Integer, String> variable = new HashMap<>();
 
         /** 负载数据 */
         private T payload;

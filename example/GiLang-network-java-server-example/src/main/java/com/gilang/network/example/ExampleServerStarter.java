@@ -1,6 +1,7 @@
 package com.gilang.network.example;
 
 import com.gilang.network.context.ServerContext;
+import com.gilang.network.netty.http.NettyHttpServerRunner;
 import com.gilang.network.netty.ws.NettyWebsocketServerRunner;
 import com.gilang.network.starter.ContextLoader;
 
@@ -17,6 +18,14 @@ public class ExampleServerStarter {
         contextLoader.setPropertiesPath("gilang.properties");
         ServerContext serverContext = contextLoader.contextLoad();
         NettyWebsocketServerRunner websocketServerRunner = new NettyWebsocketServerRunner();
-        websocketServerRunner.start(serverContext);
+        new Thread(() -> {
+            try {
+                websocketServerRunner.start(serverContext);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+        NettyHttpServerRunner nettyHttpServerRunner = new NettyHttpServerRunner();
+        nettyHttpServerRunner.start(serverContext);
     }
 }

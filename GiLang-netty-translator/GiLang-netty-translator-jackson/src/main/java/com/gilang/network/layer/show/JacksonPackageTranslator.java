@@ -5,9 +5,9 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.gilang.common.annotation.TranslatorType;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -21,13 +21,6 @@ import java.nio.charset.StandardCharsets;
 @TranslatorType(0b0010000)
 public class JacksonPackageTranslator implements PackageTranslator {
 
-    public static final ObjectMapper mapper = new ObjectMapper();
-    static {
-        SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-        mapper.registerModule(simpleModule);
-    }
 
 
     @Override
@@ -39,7 +32,7 @@ public class JacksonPackageTranslator implements PackageTranslator {
             if (ClassUtil.isSimpleValueType((Class<?>) type)) {
                 return Convert.convert(type, new String(bs, StandardCharsets.UTF_8));
             }
-            return mapper.readValue(bs, (Class) type);
+            return JsonUtil.mapper.readValue(bs, (Class) type);
         } catch (IOException e) {
             throw new RuntimeException("Jackson deserialize exception : " + e.getMessage());
         }
@@ -54,7 +47,7 @@ public class JacksonPackageTranslator implements PackageTranslator {
             if (ClassUtil.isSimpleValueType((object.getClass()))) {
                 return Convert.convert(String.class, object).getBytes(StandardCharsets.UTF_8);
             }
-            return mapper.writeValueAsBytes(object);
+            return JsonUtil.mapper.writeValueAsBytes(object);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Jackson serialize exception : " + e.getMessage());
 

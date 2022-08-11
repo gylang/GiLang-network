@@ -1,6 +1,7 @@
 package com.gilang.network.layer.app.http;
 
 import com.gilang.common.domian.http.HttpServiceWrapper;
+import com.gilang.network.context.ServerContext;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface HttpInvokerScanner {
      *
      * @return 服务包装数据
      */
-    List<HttpServiceWrapper> scan();
+    List<HttpServiceWrapper> scan(ServerContext serverContext);
 }

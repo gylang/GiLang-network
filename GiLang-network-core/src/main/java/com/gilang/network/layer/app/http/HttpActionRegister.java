@@ -17,20 +17,14 @@ import java.util.List;
  * @author gylang
  * data 2022/8/10
  */
-public class HttpActionRegister implements HttpInvokerScanner, AfterNetWorkContextInitialized {
-
-    private BeanFactoryContext beanFactoryContext;
+public class HttpActionRegister implements HttpInvokerScanner {
 
 
-    @Override
-    public void post(ServerContext serverContext) {
-        beanFactoryContext = serverContext.getBeanFactoryContext();
-    }
 
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public List<HttpServiceWrapper> scan() {
-        List<HttpAction> beanList = beanFactoryContext.getBeanList(HttpAction.class);
+    public List<HttpServiceWrapper> scan(ServerContext serverContext) {
+        List<HttpAction> beanList = serverContext.getBeanFactoryContext().getBeanList(HttpAction.class);
         List<HttpServiceWrapper> serviceWrappers = new ArrayList<>();
         for (HttpAction httpAction : beanList) {
             RequestMapping annotation = ClassUtils.recurseFindAnnotation(ClassUtils.getUserClass(httpAction.getClass()), RequestMapping.class);
@@ -46,6 +40,7 @@ public class HttpActionRegister implements HttpInvokerScanner, AfterNetWorkConte
                         return response;
                     }
                 });
+                serviceWrappers.add(httpServiceWrapper);
             }
         }
 
