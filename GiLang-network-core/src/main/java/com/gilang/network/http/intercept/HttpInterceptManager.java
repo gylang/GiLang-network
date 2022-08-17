@@ -8,7 +8,7 @@ import com.gilang.common.domian.http.HttpServiceWrapper;
  * @author gylang
  * data 2022/8/16
  */
-public interface HttpIntercept {
+public interface HttpInterceptManager {
 
     /**
      * 执行请求之前, 判断是否通过拦截器, true为通过
@@ -19,7 +19,7 @@ public interface HttpIntercept {
      * @return true: 通过拦截器
      * @throws Exception 抛出的异常信息
      */
-    default boolean preHandle(HttpDataRequest<?> request, HttpDataResponse response, HttpServiceWrapper serviceWrapper)
+    default boolean preHandle(HttpDataRequest<Object> request, HttpDataResponse response, HttpServiceWrapper serviceWrapper)
             throws Exception {
 
         return true;
@@ -33,7 +33,7 @@ public interface HttpIntercept {
      * @param serviceWrapper 服务调处理类相关
      * @throws Exception 抛出的异常信息
      */
-    default void postHandle(HttpDataRequest<?> request, HttpDataResponse response, HttpServiceWrapper serviceWrapper) throws Exception {
+    default void postHandle(HttpDataRequest<Object> request, HttpDataResponse response, HttpServiceWrapper serviceWrapper) throws Exception {
     }
 
     /**
@@ -44,12 +44,7 @@ public interface HttpIntercept {
      * @param serviceWrapper 服务调处理类相关
      * @throws Exception 抛出的异常信息
      */
-    default void afterCompletion(HttpDataRequest<?> request, HttpDataResponse response, HttpServiceWrapper serviceWrapper, Exception ex) throws Exception {
+    default void afterCompletion(HttpDataRequest<Object> request, HttpDataResponse response, HttpServiceWrapper serviceWrapper, Exception ex) throws Exception {
     }
-
-    /**
-     * 拦截的路径
-     */
-    String[] interceptPath();
 
 }

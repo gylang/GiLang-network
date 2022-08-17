@@ -12,12 +12,14 @@ import com.gilang.common.enums.RequestMethod;
 import com.gilang.network.context.HttpSessionContext;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
+import com.gilang.network.http.exception.Http404Exception;
+import com.gilang.network.http.exception.HttpInterceptPreException;
+import com.gilang.network.http.handler.HttpExceptionHandlerManager;
+import com.gilang.network.http.intercept.HttpIntercept;
 import com.gilang.network.layer.show.http.HttpTranslator;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author gylang
@@ -31,29 +33,86 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
 
     private ResponseRender responseRender;
 
+    private HttpExceptionHandlerManager httpExceptionHandlerManager;
+
+    private Map<String, List<HttpIntercept>> httpInterceptPool;
+
     @Override
     public void route(HttpDataRequest<?> httpDataRequest, HttpSessionContext context) {
         HttpDataResponse httpDataResponse = new HttpDataResponse();
         String uri = httpDataRequest.getUri();
-        UrlSearchTree<HttpServiceWrapper> searchTree = urlSearchTreePool.get(httpDataRequest.getMethod().toUpperCase());
-        if (null == searchTree) {
-            render404(httpDataRequest, httpDataResponse, context);
-            return;
+        List<HttpIntercept> httpIntercepts = findIntercept(uri);
+        HttpServiceWrapper serviceWrapper = null;
+        try {
+            // 地址查询
+            UrlSearchTree<HttpServiceWrapper> searchTree = urlSearchTreePool.get(httpDataRequest.getMethod().toUpperCase());
+            if (null == searchTree) {
+                throw new Http404Exception(httpDataRequest);
+            }
+            // 寻找业务执行
+            UrlSearchTree.PathLeaf<HttpServiceWrapper> pathLeaf = searchTree.findPathLeaf(uri);
+            if (null == pathLeaf) {
+                throw new Http404Exception(httpDataRequest);
+            }
+            // 设置路径参数
+            setVariable(httpDataRequest, uri, pathLeaf);
+            // 执行拦截器
+            serviceWrapper = pathLeaf.getPayload();
+            if (CollUtil.isNotEmpty(httpIntercepts)) {
+                for (HttpIntercept httpIntercept : httpIntercepts) {
+                    boolean b = httpIntercept.preHandle(httpDataRequest, httpDataResponse, serviceWrapper);
+                    if (!b) {
+                        // 请求被拦截
+                        throw new HttpInterceptPreException();
+                    }
+                }
+            }
+            serviceWrapper.getHttpInvokeHelper().doAction(httpDataRequest, httpDataResponse);
+            // 后置拦截器
+            for (HttpIntercept httpIntercept : httpIntercepts) {
+                httpIntercept.postHandle(httpDataRequest, httpDataResponse, serviceWrapper);
+            }
+            httpDataResponse.setStatus(httpDataResponse.getStatus() != null ? httpDataResponse.getStatus() : 200);
+        } catch (Exception e) {
+            httpExceptionHandlerManager.handle(httpDataRequest, httpDataResponse, e);
+
         }
-        UrlSearchTree.PathLeaf<HttpServiceWrapper> pathLeaf = searchTree.findPathLeaf(uri);
-        if (null == pathLeaf) {
-            // todo
-            render404(httpDataRequest, httpDataResponse, context);
-            return;
+        // 写入完成之后的拦截器
+        try {
+            write(httpDataRequest, httpDataResponse, context);
+            for (HttpIntercept httpIntercept : httpIntercepts) {
+                httpIntercept.afterCompletion(httpDataRequest, httpDataResponse, serviceWrapper, null);
+            }
+        } catch (Exception e) {
+            // 写入异常
+            for (HttpIntercept httpIntercept : httpIntercepts) {
+                try {
+                    httpIntercept.afterCompletion(httpDataRequest, httpDataResponse, serviceWrapper, e);
+                } catch (Exception exception) {
+                    httpExceptionHandlerManager.handle(httpDataRequest, httpDataResponse, e);
+                }
+            }
+            e.printStackTrace();
         }
+
+    }
+
+    private List<HttpIntercept> findIntercept(String uri) {
+        List<HttpIntercept> findIntercepts = new ArrayList<>();
+        for (Map.Entry<String, List<HttpIntercept>> entry : httpInterceptPool.entrySet()) {
+            if (uri.contains(entry.getKey())) {
+                findIntercepts.addAll(entry.getValue());
+            }
+        }
+        return findIntercepts;
+    }
+
+    private void setVariable(HttpDataRequest<?> httpDataRequest, String uri, UrlSearchTree.PathLeaf<HttpServiceWrapper> pathLeaf) {
         Map<Integer, String> variable = pathLeaf.getVariable();
         List<String> parts = StrUtil.split(uri, '/', true, true);
         for (Map.Entry<Integer, String> entry : variable.entrySet()) {
             httpDataRequest.getPathVariables().put(entry.getValue(), parts.get(entry.getKey()));
         }
-        pathLeaf.getPayload().getHttpInvokeHelper().doAction(httpDataRequest, httpDataResponse);
-        httpDataResponse.setStatus(200);
-        write(httpDataRequest, httpDataResponse, context);
     }
 
 
@@ -73,11 +132,32 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
         return httpTranslatorPool.get(response.contentType()).toByte(response.getPayload());
     }
 
+
+    private void write(HttpDataRequest<?> httpDataRequest, HttpDataResponse httpDataResponse, HttpSessionContext context) {
+        responseRender.render(httpDataRequest, httpDataResponse);
+        context.write(httpDataResponse);
+
+    }
+
     @Override
     public void post(ServerContext serverContext) {
+        responseRender = serverContext.getBeanFactoryContext().getPrimaryBean(ResponseRender.class);
+        httpExceptionHandlerManager = serverContext.getBeanFactoryContext().getPrimaryBean(HttpExceptionHandlerManager.class);
         registerUrlSearch(serverContext);
         registerTranslator(serverContext);
-        responseRender = serverContext.getBeanFactoryContext().getPrimaryBean(ResponseRender.class);
+        registerIntercept(serverContext);
+    }
+
+    private void registerIntercept(ServerContext serverContext) {
+
+        httpInterceptPool = new HashMap<>();
+        List<HttpIntercept> beanList = serverContext.getBeanFactoryContext().getBeanList(HttpIntercept.class);
+        for (HttpIntercept httpIntercept : beanList) {
+            for (String path : httpIntercept.interceptPath()) {
+                List<HttpIntercept> httpIntercepts = httpInterceptPool.computeIfAbsent(path, k -> new LinkedList<>());
+                httpIntercepts.add(httpIntercept);
+            }
+        }
     }
 
     private void registerTranslator(ServerContext serverContext) {
@@ -90,19 +170,6 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
                 this.httpTranslatorPool.put(contentType.toLowerCase(), httpTranslator);
             }
         }
-    }
-
-
-    protected void render404(HttpDataRequest<?> httpDataRequest, HttpDataResponse httpDataResponse, HttpSessionContext context) {
-        httpDataResponse.setStatus(404);
-
-        write(httpDataRequest, httpDataResponse, context);
-    }
-
-    private void write(HttpDataRequest<?> httpDataRequest, HttpDataResponse httpDataResponse, HttpSessionContext context) {
-        responseRender.render(httpDataRequest, httpDataResponse);
-        context.write(httpDataResponse);
-
     }
 
 

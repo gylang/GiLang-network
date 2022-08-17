@@ -20,4 +20,6 @@ public interface HttpExceptionHandler<E extends Exception> {
      */
     void handler(HttpDataRequest<Object> request, HttpDataResponse response, E exception);
 
+
+
 }

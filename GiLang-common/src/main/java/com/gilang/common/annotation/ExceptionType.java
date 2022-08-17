@@ -9,12 +9,13 @@ import java.lang.annotation.Target;
 
 /**
  * 服务类型, http,socket, websocket
+ *
  * @author gylang
  * data 2022/6/28
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ServerType {
+public @interface ExceptionType {
 
-    ServerTypeEnum value();
+    Class<? extends Exception> value();
 }

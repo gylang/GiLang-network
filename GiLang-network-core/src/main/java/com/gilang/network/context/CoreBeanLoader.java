@@ -4,6 +4,7 @@ import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.config.HttpConfig;
 import com.gilang.network.config.WebsocketConfig;
 import com.gilang.network.event.EventContext;
+import com.gilang.network.http.handler.HttpExceptionHandlerManager;
 import com.gilang.network.layer.app.http.HttpActionRegister;
 import com.gilang.network.layer.app.http.ResponseRenderImpl;
 import com.gilang.network.layer.app.http.SimpleHttpAppLayerInvokerAdapterImpl;
@@ -31,6 +32,10 @@ public class CoreBeanLoader implements BeanLoader {
         beanFactoryContext.register(HttpActionRegister.class.getName(), new HttpActionRegister());
         beanFactoryContext.register(ResponseRenderImpl.class.getName(), new ResponseRenderImpl());
         beanFactoryContext.register(HttpConfig.class.getName(), propertiesVisitor.parseObject("gilang.network.http", HttpConfig.class));
+
+        // 拦截器
+        beanFactoryContext.register(HttpExceptionHandlerManager.class.getName(), new HttpExceptionHandlerManager());
+
 
     }
 }

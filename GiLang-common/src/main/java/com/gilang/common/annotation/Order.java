@@ -1,20 +1,20 @@
 package com.gilang.common.annotation;
 
-import com.gilang.common.enums.ServerTypeEnum;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 服务类型, http,socket, websocket
+ * 交互数据的编码与解码的翻译器类型表
+ *
  * @author gylang
- * data 2022/6/28
+ * data 2022/6/15
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface ServerType {
+public @interface Order {
 
-    ServerTypeEnum value();
+    /** translatorType 命令类型 */
+    int value() default Integer.MAX_VALUE;
 }
