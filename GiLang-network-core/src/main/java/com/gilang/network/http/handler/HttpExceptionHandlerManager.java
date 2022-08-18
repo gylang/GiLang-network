@@ -33,10 +33,11 @@ public class HttpExceptionHandlerManager implements AfterNetWorkContextInitializ
             }
             if (null != httpExceptionHandler) {
                 httpExceptionHandler.handler(request, response, e);
-                break;
+                return;
             }
             aClass = aClass.getSuperclass();
         }
+        // 如果有异常处理已经return了, 执行倒这里证明没有一个可以捕获的异常处理类
     }
 
     @Override

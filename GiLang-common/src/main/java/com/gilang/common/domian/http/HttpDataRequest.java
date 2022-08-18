@@ -1,13 +1,13 @@
 package com.gilang.common.domian.http;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.net.URLDecoder;
 import cn.hutool.core.util.URLUtil;
 import com.gilang.common.domian.DataPackage;
-import com.gilang.common.domian.http.HttpCookie;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -19,25 +19,45 @@ import java.util.*;
 @Data
 public class HttpDataRequest<T> extends DataPackage<T> {
 
-    /** 请求uri */
+    /**
+     * 请求uri
+     */
     private String uri;
+    /**
+     * 转码后的uri
+     */
+    private String decodedUri;
 
-    /** url query参数 */
+    /**
+     * url query参数
+     */
     private Map<String, String> query;
 
-    /** 请求方法 */
+    /**
+     * 请求方法
+     */
     private String method;
 
-    /** 请求头 */
+    /**
+     * 请求头
+     */
     private Map<String, List<String>> header = new HashMap<>();
 
-    /** cookies */
+    /**
+     * cookies
+     */
     private Map<String, HttpCookie> cookies = new HashMap<>();
 
-    /** 远程服务ip */
+    /**
+     * 远程服务ip
+     */
     private String remoteHost;
 
-    /** 路径参数 */
+    private Charset charset = StandardCharsets.UTF_8;
+
+    /**
+     * 路径参数
+     */
     private Map<String, String> pathVariables = new HashMap<>();
 
     /**
@@ -78,10 +98,17 @@ public class HttpDataRequest<T> extends DataPackage<T> {
     public String getPathVariable(String key) {
         return pathVariables.get(key);
     }
+
     public String getPathDecodeVariable(String key, String charset) {
         return URLUtil.decode(getPathVariable(key), charset);
     }
+
     public String getPathDecodeVariable(String key) {
         return URLUtil.decode(getPathVariable(key), StandardCharsets.UTF_8);
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+        this.decodedUri = URLDecoder.decode(uri, charset);
     }
 }

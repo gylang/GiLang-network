@@ -4,6 +4,8 @@ import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.config.HttpConfig;
 import com.gilang.network.config.WebsocketConfig;
 import com.gilang.network.event.EventContext;
+import com.gilang.network.http.handler.Default404ExceptionHandler;
+import com.gilang.network.http.handler.DefaultExceptionHandler;
 import com.gilang.network.http.handler.HttpExceptionHandlerManager;
 import com.gilang.network.layer.app.http.HttpActionRegister;
 import com.gilang.network.layer.app.http.ResponseRenderImpl;
@@ -33,8 +35,10 @@ public class CoreBeanLoader implements BeanLoader {
         beanFactoryContext.register(ResponseRenderImpl.class.getName(), new ResponseRenderImpl());
         beanFactoryContext.register(HttpConfig.class.getName(), propertiesVisitor.parseObject("gilang.network.http", HttpConfig.class));
 
-        // 拦截器
+        // 全家异常处理
         beanFactoryContext.register(HttpExceptionHandlerManager.class.getName(), new HttpExceptionHandlerManager());
+        beanFactoryContext.register(DefaultExceptionHandler.class.getName(), new DefaultExceptionHandler());
+        beanFactoryContext.register(Default404ExceptionHandler.class.getName(), new Default404ExceptionHandler());
 
 
     }
