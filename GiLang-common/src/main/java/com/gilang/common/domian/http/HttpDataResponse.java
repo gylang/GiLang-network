@@ -19,12 +19,15 @@ public class HttpDataResponse extends DataPackage<Object> {
     private Integer status;
 
 
-
     /** 请求头 */
     private Map<String, List<String>> header = new HashMap<>();
 
     /** cookies */
     private Map<String, HttpCookie> cookies = new HashMap<>();
+
+    /** 是否已经执行完成 */
+    private boolean done;
+
 
 
     /**
@@ -38,7 +41,7 @@ public class HttpDataResponse extends DataPackage<Object> {
     }
 
     public void setHeader(String header, String value) {
-       this.header.computeIfAbsent(header, k-> new ArrayList<>()).add(value);
+        this.header.computeIfAbsent(header, k -> new ArrayList<>()).add(value);
     }
 
     /**
@@ -50,4 +53,10 @@ public class HttpDataResponse extends DataPackage<Object> {
 
         return CollUtil.getFirst(header.get("content-type"));
     }
+
+    public void write(byte[] bytes) {
+        setPayload(bytes);
+        this.done = true;
+    }
+
 }

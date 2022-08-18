@@ -42,12 +42,10 @@ public class NettyHttpDecoder extends MessageToMessageDecoder<FullHttpRequest> {
         Class<?> type = httpAppLayerInvokerAdapter.resolveInvokeParamType(httpRequest.method().name(), httpRequest.uri());
         HttpHeaders headers = httpRequest.headers();
         String contentType = headers.get(HttpHeaderNames.CONTENT_TYPE);
-        Object object = httpAppLayerInvokerAdapter.toObject(contentType, httpRequest.content().array(), type);
-        HttpDataRequest<Object> dataRequest = new HttpDataRequest<>(object);
+        HttpDataRequest<Object> dataRequest = new HttpDataRequest<>(type);
         dataRequest.setUri(httpRequest.uri());
         dataRequest.setMethod(httpRequest.method().name());
         dataRequest.setContentType(contentType);
-
         for (Map.Entry<String, String> header : headers) {
             dataRequest.setHeader(header.getKey(), header.getValue());
             if (HttpHeaderNames.COOKIE.toString().equals(header.getKey())) {
@@ -66,6 +64,8 @@ public class NettyHttpDecoder extends MessageToMessageDecoder<FullHttpRequest> {
             }
         }
         dataRequest.setRemoteHost(channelHandlerContext.channel().remoteAddress().toString());
+        Object object = httpAppLayerInvokerAdapter.toObject(contentType, httpRequest.content().array(), type, dataRequest);
+        dataRequest.setPayload(object);
         list.add(dataRequest);
     }
 }

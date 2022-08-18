@@ -10,15 +10,6 @@ public interface HttpTranslator {
 
 
     /**
-     * 将对象翻译成java对象
-     *
-     * @param bs              字节
-     * @param type            类型
-     * @param httpDataRequest 请求体
-     */
-    <T> void writeBody(byte[] bs, Class<T> type, HttpDataRequest<T> httpDataRequest);
-
-    /**
      * 将对象翻译成byte数组
      *
      * @param object java对象
@@ -28,7 +19,17 @@ public interface HttpTranslator {
 
     /**
      * 支持的contentType
+     *
      * @return contentType
      */
     String[] supportContentTypes();
+
+    /**
+     * 将byte数组翻译成java对象
+     *
+     * @param bs              字节
+     * @param type            类型
+     * @param httpDataRequest 请求对象
+     */
+     Object toObject(byte[] bs, Class<?> type, HttpDataRequest<?> httpDataRequest);
 }

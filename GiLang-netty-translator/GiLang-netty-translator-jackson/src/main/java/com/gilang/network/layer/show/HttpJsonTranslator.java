@@ -11,17 +11,6 @@ import java.io.IOException;
  */
 public class HttpJsonTranslator extends JacksonPackageTranslator implements HttpTranslator {
 
-    @Override
-    public <T> void writeBody(byte[] bs, Class<T> type, HttpDataRequest<T> httpDataRequest) {
-
-        try {
-            T t = JsonUtil.mapper.readValue(bs, type);
-            httpDataRequest.setPayload(t);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Jackson deserialize exception : " + e.getMessage());
-        }
-    }
 
     @Override
     public byte[] toByte(Object object) {
@@ -36,5 +25,15 @@ public class HttpJsonTranslator extends JacksonPackageTranslator implements Http
     @Override
     public String[] supportContentTypes() {
         return new String[]{"application/json"};
+    }
+
+    @Override
+    public Object toObject(byte[] bs, Class<?> type, HttpDataRequest<?> httpDataRequest) {
+        try {
+            return JsonUtil.mapper.readValue(bs, type);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Jackson deserialize exception : " + e.getMessage());
+        }
     }
 }

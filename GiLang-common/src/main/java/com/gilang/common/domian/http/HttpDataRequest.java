@@ -85,6 +85,7 @@ public class HttpDataRequest<T> extends DataPackage<T> {
         this.setPayload(t);
     }
 
+
     /**
      * 请求内容类型
      *

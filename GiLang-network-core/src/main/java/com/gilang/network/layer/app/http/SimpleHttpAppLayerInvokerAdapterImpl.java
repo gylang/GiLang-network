@@ -1,6 +1,7 @@
 package com.gilang.network.layer.app.http;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.gilang.common.domian.http.HttpDataRequest;
@@ -8,7 +9,8 @@ import com.gilang.common.domian.http.HttpDataResponse;
 import com.gilang.common.domian.http.HttpServiceWrapper;
 import com.gilang.common.domian.http.UrlSearchTree;
 import com.gilang.common.enums.RequestMethod;
-import com.gilang.network.context.HttpSessionContext;
+import com.gilang.common.util.ClassUtils;
+import com.gilang.common.domian.http.HttpSessionContext;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
 import com.gilang.network.http.exception.Http404Exception;
@@ -19,7 +21,7 @@ import com.gilang.network.http.intercept.HttpIntercept;
 import com.gilang.network.layer.show.http.HttpTranslator;
 import lombok.extern.slf4j.Slf4j;
 
-import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -128,14 +130,29 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
     }
 
     @Override
-    public Object toObject(String contentType, byte[] bs, Type type) {
-        return null;
+    public Object toObject(String contentType, byte[] bs, Class<?> type, HttpDataRequest<?> dataRequest) {
+        if (null == type || Void.class == type) {
+            return null;
+        } else if (ClassUtils.isSimpleValueType(type)) {
+            return Convert.convert(type, new String(bs, StandardCharsets.UTF_8));
+        }
+        return httpTranslatorPool.get(contentType).toObject(bs, type, dataRequest);
     }
 
 
     @Override
     public byte[] toByte(HttpDataResponse response) {
-        return httpTranslatorPool.get(response.contentType()).toByte(response.getPayload());
+        Object payload = response.getPayload();
+        if (null == payload) {
+            return new byte[0];
+        }
+        if (Byte.class.isAssignableFrom(ArrayUtil.getComponentType(payload))) {
+            return (byte[]) payload;
+        } else if (ClassUtils.isSimpleValueType(payload.getClass())) {
+            return Convert.convert(String.class, payload).getBytes(StandardCharsets.UTF_8);
+        } else {
+            return httpTranslatorPool.get(response.contentType()).toByte(payload);
+        }
     }
 
 

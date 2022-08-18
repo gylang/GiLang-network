@@ -1,6 +1,6 @@
 package com.gilang.network.netty.context;
 
-import com.gilang.network.context.HttpSessionContext;
+import com.gilang.common.domian.http.HttpSessionContext;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 
