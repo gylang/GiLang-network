@@ -5,6 +5,7 @@ import com.gilang.common.annotation.Order;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author gylang
@@ -26,6 +27,34 @@ public class OrderUtil {
         return list.stream().min(Comparator.comparingInt(v ->
                 Optional.ofNullable(ClassUtils.recurseFindAnnotation(v.getClass(), Order.class)).map(Order::value)
                         .orElse(defaultOrderNum))).orElse(null);
+    }
+    /**
+     * 通过注解排序
+     *
+     * @param list            权重列表
+     * @param defaultOrderNum 当获取不到权值的默认值
+     * @param <T>             排序列表的值类型
+     * @return 排序后列表
+     */
+    public static  <T> List<T> sortAscByAnnotation(List<T> list, int defaultOrderNum) {
+
+        return list.stream().sorted(Comparator.comparingInt(v ->
+                Optional.ofNullable(ClassUtils.recurseFindAnnotation(v.getClass(), Order.class)).map(Order::value)
+                        .orElse(defaultOrderNum))).collect(Collectors.toList());
+    }
+    /**
+     * 通过注解排序
+     *
+     * @param list            权重列表
+     * @param defaultOrderNum 当获取不到权值的默认值
+     * @param <T>             排序列表的值类型
+     * @return 排序后列表
+     */
+    public static  <T> List<T> sortDescByAnnotation(List<T> list, int defaultOrderNum) {
+
+        return list.stream().sorted(Comparator.comparingInt(v ->
+                Optional.ofNullable(ClassUtils.recurseFindAnnotation(v.getClass(), Order.class)).map(Order::value)
+                        .orElse(defaultOrderNum)).reversed()).collect(Collectors.toList());
     }
 
     /**

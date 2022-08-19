@@ -15,6 +15,7 @@ import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
 import com.gilang.network.http.exception.Http404Exception;
 import com.gilang.network.http.exception.HttpInterceptPreException;
+import com.gilang.network.http.filter.HttpFilterDelegate;
 import com.gilang.network.http.handler.HttpExceptionHandlerManager;
 import com.gilang.network.http.exception.HttpRenderException;
 import com.gilang.network.http.intercept.HttpIntercept;
@@ -41,10 +42,16 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
 
     private Map<String, List<HttpIntercept>> httpInterceptPool;
 
+    private HttpFilterDelegate httpFilterDelegate;
+
     @Override
     public void route(HttpDataRequest<?> httpDataRequest, HttpSessionContext context) {
         HttpDataResponse httpDataResponse = new HttpDataResponse();
         String uri = httpDataRequest.getUri();
+        httpFilterDelegate.doFilter(httpDataRequest, httpDataResponse, context);
+        if (httpDataResponse.isDone()) {
+            return;
+        }
         List<HttpIntercept> httpIntercepts = findIntercept(uri);
         HttpServiceWrapper serviceWrapper = null;
         try {
@@ -68,6 +75,9 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
                     if (!b) {
                         // 请求被拦截
                         throw new HttpInterceptPreException();
+                    }
+                    if (httpDataResponse.isDone()) {
+                        break;
                     }
                 }
             }
