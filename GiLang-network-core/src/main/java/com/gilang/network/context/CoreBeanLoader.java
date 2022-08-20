@@ -4,6 +4,8 @@ import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.config.HttpConfig;
 import com.gilang.network.config.WebsocketConfig;
 import com.gilang.network.event.EventContext;
+import com.gilang.network.http.filter.HttpCorsFilter;
+import com.gilang.network.http.filter.HttpFilterDelegate;
 import com.gilang.network.http.handler.Default404ExceptionHandler;
 import com.gilang.network.http.handler.DefaultExceptionHandler;
 import com.gilang.network.http.handler.HttpExceptionHandlerManager;
@@ -39,6 +41,8 @@ public class CoreBeanLoader implements BeanLoader {
         beanFactoryContext.register(HttpExceptionHandlerManager.class.getName(), new HttpExceptionHandlerManager());
         beanFactoryContext.register(DefaultExceptionHandler.class.getName(), new DefaultExceptionHandler());
         beanFactoryContext.register(Default404ExceptionHandler.class.getName(), new Default404ExceptionHandler());
+        beanFactoryContext.register(HttpCorsFilter.class.getName(), new HttpCorsFilter());
+        beanFactoryContext.register(HttpFilterDelegate.class.getName(), new HttpFilterDelegate());
 
 
     }

@@ -50,6 +50,7 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
         String uri = httpDataRequest.getUri();
         httpFilterDelegate.doFilter(httpDataRequest, httpDataResponse, context);
         if (httpDataResponse.isDone()) {
+            write(httpDataRequest, httpDataResponse, context);
             return;
         }
         List<HttpIntercept> httpIntercepts = findIntercept(uri);
@@ -176,6 +177,7 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
     public void post(ServerContext serverContext) {
         responseRender = serverContext.getBeanFactoryContext().getPrimaryBean(ResponseRender.class);
         httpExceptionHandlerManager = serverContext.getBeanFactoryContext().getPrimaryBean(HttpExceptionHandlerManager.class);
+        httpFilterDelegate = serverContext.getBeanFactoryContext().getPrimaryBean(HttpFilterDelegate.class);
         registerUrlSearch(serverContext);
         registerTranslator(serverContext);
         registerIntercept(serverContext);

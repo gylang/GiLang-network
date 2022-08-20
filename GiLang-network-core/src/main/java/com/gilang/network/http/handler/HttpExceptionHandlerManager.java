@@ -24,7 +24,7 @@ public class HttpExceptionHandlerManager implements AfterNetWorkContextInitializ
 
 
     public void handle(HttpDataRequest<?> request, HttpDataResponse response, Exception e) {
-
+        response.setStatus(500);
         Class<?> aClass = e.getClass();
         while (true) {
             HttpExceptionHandler httpExceptionHandler = httpExceptionHandlerPool.get(aClass);
