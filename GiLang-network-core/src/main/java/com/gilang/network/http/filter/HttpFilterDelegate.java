@@ -1,5 +1,6 @@
 package com.gilang.network.http.filter;
 
+import cn.hutool.core.collection.CollUtil;
 import com.gilang.common.domian.http.HttpDataRequest;
 import com.gilang.common.domian.http.HttpDataResponse;
 import com.gilang.common.domian.http.HttpSessionContext;
@@ -7,6 +8,7 @@ import com.gilang.common.util.OrderUtil;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +17,7 @@ import java.util.List;
  */
 public class HttpFilterDelegate implements AfterNetWorkContextInitialized {
 
-    private List<HttpFilter> orderFilter;
+    private List<HttpFilterChain> orderFilter;
 
 
     /**
@@ -24,10 +26,10 @@ public class HttpFilterDelegate implements AfterNetWorkContextInitialized {
      * @param request  请求
      * @param response 响应
      */
-   public void doFilter(HttpDataRequest<?> request, HttpDataResponse response, HttpSessionContext sessionContext) {
+    public void doFilter(HttpDataRequest<?> request, HttpDataResponse response, HttpSessionContext sessionContext) {
 
-        for (int i = 0; i < orderFilter.size(); i++) {
-            orderFilter.get(i).doFilter(request, response, i == orderFilter.size() - 1 ? empty : orderFilter.get(i + 1));
+        for (HttpFilterChain httpFilterChain : orderFilter) {
+            httpFilterChain.doFilter(request, response);
             if (response.isDone()) {
                 sessionContext.write(response);
                 return;
@@ -38,12 +40,19 @@ public class HttpFilterDelegate implements AfterNetWorkContextInitialized {
     @Override
     public void post(ServerContext serverContext) {
         List<HttpFilter> beanList = serverContext.getBeanFactoryContext().getBeanList(HttpFilter.class);
-        orderFilter = OrderUtil.sortAscByAnnotation(beanList, Integer.MAX_VALUE);
+        beanList = OrderUtil.sortAscByAnnotation(beanList, Integer.MAX_VALUE);
+        orderFilter = CollUtil.map(beanList, HttpFilterChainImpl::new, true);
+
+        for (int i = 0; i < orderFilter.size(); i++) {
+
+            HttpFilterChain httpFilterChain = orderFilter.get(i);
+            httpFilterChain.setNext(i == orderFilter.size() - 1 ? new HttpFilterChainImpl(empty) : orderFilter.get(i + 1));
+        }
     }
 
     private HttpFilter empty = new HttpFilter() {
         @Override
-        public void doFilter(HttpDataRequest<?> request, HttpDataResponse response, HttpFilter chain) {
+        public void doFilter(HttpDataRequest<?> request, HttpDataResponse response, HttpFilterChain chain) {
 
         }
     };

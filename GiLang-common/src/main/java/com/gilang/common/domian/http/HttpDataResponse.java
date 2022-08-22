@@ -29,7 +29,6 @@ public class HttpDataResponse extends DataPackage<Object> {
     private boolean done;
 
 
-
     /**
      * 设置请求内容类型
      *
@@ -40,8 +39,17 @@ public class HttpDataResponse extends DataPackage<Object> {
         header.put("content-type", Collections.singletonList(contentType));
     }
 
-    public void setHeader(String header, String value) {
-        this.header.computeIfAbsent(header, k -> new ArrayList<>()).add(value);
+    public void addHeader(String name, String value) {
+        this.header.computeIfAbsent(name, k -> new ArrayList<>()).add(value);
+    }
+
+    public void setHeader(String name, List<String> value) {
+        this.header.put(name, value);
+    }
+
+    public List<String> getHeaderList(String name) {
+        List<String> headers = this.header.get(name);
+        return null == headers ? Collections.emptyList() : headers;
     }
 
     /**

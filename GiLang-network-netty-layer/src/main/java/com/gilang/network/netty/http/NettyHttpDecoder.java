@@ -44,6 +44,7 @@ public class NettyHttpDecoder extends MessageToMessageDecoder<FullHttpRequest> {
         String contentType = headers.get(HttpHeaderNames.CONTENT_TYPE);
         HttpDataRequest<Object> dataRequest = new HttpDataRequest<>(type);
         dataRequest.setUri(httpRequest.uri());
+        dataRequest.setHost(httpRequest.headers().get(HttpHeaderNames.HOST));
         dataRequest.setMethod(httpRequest.method().name());
         dataRequest.setContentType(contentType);
         for (Map.Entry<String, String> header : headers) {

@@ -157,10 +157,10 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
         if (null == payload) {
             return new byte[0];
         }
-        if (Byte.class.isAssignableFrom(ArrayUtil.getComponentType(payload))) {
-            return (byte[]) payload;
-        } else if (ClassUtils.isSimpleValueType(payload.getClass())) {
+        if (ClassUtils.isSimpleValueType(payload.getClass())) {
             return Convert.convert(String.class, payload).getBytes(StandardCharsets.UTF_8);
+        } else if (ArrayUtil.isArray(payload) && Byte.class.isAssignableFrom(ArrayUtil.getComponentType(payload))) {
+            return (byte[]) payload;
         } else {
             return httpTranslatorPool.get(response.contentType()).toByte(payload);
         }

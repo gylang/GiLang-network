@@ -7,7 +7,7 @@ import com.gilang.common.domian.http.HttpDataResponse;
  * @author gylang
  * data 2022/8/18
  */
-public interface HttpFilter {
+public interface HttpFilterChain {
 
 
     /**
@@ -15,8 +15,8 @@ public interface HttpFilter {
      *
      * @param request  请求
      * @param response 响应
-     * @param chain    下一个过滤器
      */
-    void doFilter(HttpDataRequest<?> request, HttpDataResponse response, HttpFilterChain chain);
+    void doFilter(HttpDataRequest<?> request, HttpDataResponse response);
 
+    void setNext(HttpFilterChain next);
 }
