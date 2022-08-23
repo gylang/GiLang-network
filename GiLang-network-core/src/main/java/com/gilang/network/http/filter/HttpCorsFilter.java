@@ -10,7 +10,6 @@ import com.gilang.common.enums.RequestMethod;
 import com.gilang.network.config.CorsConfig;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
-import com.sun.istack.internal.Nullable;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.MalformedURLException;
@@ -39,7 +38,7 @@ public class HttpCorsFilter implements HttpFilter, AfterNetWorkContextInitialize
 
     }
 
-    public boolean processRequest(@Nullable CorsConfig config, HttpDataRequest<?> request,
+    public boolean processRequest(CorsConfig config, HttpDataRequest<?> request,
                                   HttpDataResponse response) {
 
         Collection<String> varyHeaders = response.getHeaderList(HttpHeaders.VARY);

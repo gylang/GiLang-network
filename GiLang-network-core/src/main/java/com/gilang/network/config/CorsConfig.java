@@ -4,7 +4,6 @@ package com.gilang.network.config;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.sun.istack.internal.Nullable;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class CorsConfig {
     private Long maxAge;
 
 
-    public String checkOrigin( String origin) {
+    public String checkOrigin(String origin) {
         if (!StrUtil.isNotEmpty(origin)) {
             return null;
         }
@@ -76,6 +75,7 @@ public class CorsConfig {
         }
         return null;
     }
+
     private String trimTrailingSlash(String origin) {
         return (origin.endsWith("/") ? origin.substring(0, origin.length() - 1) : origin);
     }
@@ -92,7 +92,7 @@ public class CorsConfig {
         }
     }
 
-    public List<String> checkHttpMethod(@Nullable String requestMethod) {
+    public List<String> checkHttpMethod(String requestMethod) {
         if (requestMethod == null) {
             return null;
         }
@@ -103,7 +103,7 @@ public class CorsConfig {
     }
 
 
-    public List<String> checkHeaders(@Nullable List<String> requestHeaders) {
+    public List<String> checkHeaders(List<String> requestHeaders) {
         if (requestHeaders == null) {
             return null;
         }
@@ -121,8 +121,7 @@ public class CorsConfig {
                 requestHeader = requestHeader.trim();
                 if (allowAnyHeader) {
                     result.add(requestHeader);
-                }
-                else {
+                } else {
                     for (String allowedHeader : this.allowedHeaders) {
                         if (requestHeader.equalsIgnoreCase(allowedHeader)) {
                             result.add(requestHeader);

@@ -8,7 +8,7 @@
     <artifactId>gilang-network</artifactId>
     <name>GiLang-network</name>
     <packaging>pom</packaging>
-    <version>${gilang-network-version}</version>
+    <version>1.0-SNAPSHOT</version>
     <modules>
         <module>gilang-network-core</module>
         <module>gilang-common</module>
