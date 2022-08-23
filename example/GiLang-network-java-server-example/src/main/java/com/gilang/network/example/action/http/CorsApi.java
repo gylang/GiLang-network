@@ -1,19 +1,21 @@
-package com.gilang.network.example.action;
+package com.gilang.network.example.action.http;
 
 import com.gilang.common.annotation.RequestMapping;
 import com.gilang.common.domian.http.HttpDataRequest;
 import com.gilang.common.domian.http.HttpDataResponse;
-import com.gilang.common.exception.BaseException;
 import com.gilang.network.layer.app.http.HttpAction;
 
 /**
- * @author 23516
- * @since 2022/8/18
+ * @author gylang
+ * data 2022/8/23
  */
-@RequestMapping(path = "/exception/{msg}")
-public class ExceptionAction implements HttpAction<String> {
+@RequestMapping(path = "/cors")
+public class CorsApi implements HttpAction<String> {
+
+
     @Override
     public void doAction(HttpDataRequest<String> dataPackage, HttpDataResponse response) {
-        throw new BaseException("111111", dataPackage.getPathDecodeVariable("msg"));
+
+        response.setSuccessBody("跨域了, 应该看不到哦");
     }
 }

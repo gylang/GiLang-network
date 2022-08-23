@@ -1,4 +1,4 @@
-package com.gilang.network.example.httpaction;
+package com.gilang.network.example.action.http;
 
 import com.gilang.common.annotation.RequestMapping;
 import com.gilang.common.domian.http.HttpDataRequest;

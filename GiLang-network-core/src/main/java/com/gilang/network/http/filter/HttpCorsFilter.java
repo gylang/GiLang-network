@@ -58,7 +58,7 @@ public class HttpCorsFilter implements HttpFilter, AfterNetWorkContextInitialize
             return true;
         }
 
-        if (response.getHeaderList(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN) != null) {
+        if (response.getHeaderList(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN).size() > 0) {
             log.trace("Skip: response already contains \"Access-Control-Allow-Origin\"");
             return true;
         }
@@ -78,7 +78,7 @@ public class HttpCorsFilter implements HttpFilter, AfterNetWorkContextInitialize
 
     private boolean handleInternal(HttpDataRequest<?> request, HttpDataResponse response, CorsConfig config, boolean preFlightRequest) {
         String requestOrigin = request.getFirstHeader(HttpHeaders.ORIGIN);
-        String allowOrigin = config.checkOrigin( requestOrigin);
+        String allowOrigin = config.checkOrigin(requestOrigin);
 
         if (allowOrigin == null) {
             log.debug("Reject: '" + requestOrigin + "' origin is not allowed");
@@ -139,8 +139,8 @@ public class HttpCorsFilter implements HttpFilter, AfterNetWorkContextInitialize
 
     public static boolean isPreFlightRequest(HttpDataRequest<?> request) {
         return (RequestMethod.OPTIONS.match(request.getMethod()) &&
-                request.getHeaderList(HttpHeaders.ORIGIN) != null &&
-                request.getHeaderList(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD) != null);
+                request.getHeaderList(HttpHeaders.ORIGIN).size() > 0 &&
+                request.getHeaderList(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD).size() > 0);
     }
 
     private boolean isCors(HttpDataRequest<?> request) {

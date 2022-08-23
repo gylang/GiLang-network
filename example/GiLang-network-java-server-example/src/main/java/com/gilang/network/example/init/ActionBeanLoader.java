@@ -3,8 +3,13 @@ package com.gilang.network.example.init;
 import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.context.BeanLoader;
 import com.gilang.network.context.ServerContext;
-import com.gilang.network.example.action.*;
-import com.gilang.network.example.httpaction.HelloApi;
+import com.gilang.network.example.action.http.CorsApi;
+import com.gilang.network.example.action.http.ExceptionApi;
+import com.gilang.network.example.action.socket.LoginAction;
+import com.gilang.network.example.action.socket.OnlineUserListAction;
+import com.gilang.network.example.action.socket.RegisterAction;
+import com.gilang.network.example.action.socket.SendMessageAction;
+import com.gilang.network.example.action.http.HelloApi;
 import com.gilang.network.example.session.ChatRoomSession;
 
 /**
@@ -24,9 +29,10 @@ public class ActionBeanLoader implements BeanLoader {
         beanFactoryContext.register(SendMessageAction.class.getName(), new SendMessageAction());
         beanFactoryContext.register(OnlineUserListAction.class.getName(), new OnlineUserListAction());
         beanFactoryContext.register(RegisterAction.class.getName(), new RegisterAction());
-        beanFactoryContext.register(ExceptionAction.class.getName(), new ExceptionAction());
+        beanFactoryContext.register(ExceptionApi.class.getName(), new ExceptionApi());
 
 
         beanFactoryContext.register(HelloApi.class.getName(), new HelloApi());
+        beanFactoryContext.register(CorsApi.class.getName(), new CorsApi());
     }
 }

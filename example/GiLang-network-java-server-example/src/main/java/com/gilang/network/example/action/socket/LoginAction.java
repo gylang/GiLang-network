@@ -1,4 +1,4 @@
-package com.gilang.network.example.action;
+package com.gilang.network.example.action.socket;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.crypto.digest.DigestUtil;

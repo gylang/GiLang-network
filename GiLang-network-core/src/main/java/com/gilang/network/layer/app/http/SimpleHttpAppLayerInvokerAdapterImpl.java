@@ -154,16 +154,19 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
     @Override
     public byte[] toByte(HttpDataResponse response) {
         Object payload = response.getPayload();
+
         if (null == payload) {
             return new byte[0];
         }
         if (ClassUtils.isSimpleValueType(payload.getClass())) {
             return Convert.convert(String.class, payload).getBytes(StandardCharsets.UTF_8);
-        } else if (ArrayUtil.isArray(payload) && Byte.class.isAssignableFrom(ArrayUtil.getComponentType(payload))) {
+        } else if (ArrayUtil.isArray(payload) && ClassUtils.isAssignable(ArrayUtil.getComponentType(payload), Byte.TYPE)) {
             return (byte[]) payload;
         } else {
+
             return httpTranslatorPool.get(response.contentType()).toByte(payload);
         }
+
     }
 
 

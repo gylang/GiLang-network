@@ -48,8 +48,7 @@ public class HttpDataResponse extends DataPackage<Object> {
     }
 
     public List<String> getHeaderList(String name) {
-        List<String> headers = this.header.get(name);
-        return null == headers ? Collections.emptyList() : headers;
+        return this.header.computeIfAbsent(name, k -> new ArrayList<>());
     }
 
     /**
@@ -63,8 +62,24 @@ public class HttpDataResponse extends DataPackage<Object> {
     }
 
     public void write(byte[] bytes) {
+        this.done = true;
+        setPayload(bytes);
+
+    }
+
+    public void writeSuccess(byte[] bytes) {
+        write(200, bytes);
+    }
+
+    public void write(int status, byte[] bytes) {
+        this.status = 200;
         setPayload(bytes);
         this.done = true;
+    }
+
+    public void setSuccessBody(Object obj) {
+        this.status = 200;
+        setPayload(obj);
     }
 
 }

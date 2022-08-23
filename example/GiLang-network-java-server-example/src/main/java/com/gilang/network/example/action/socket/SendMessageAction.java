@@ -1,4 +1,4 @@
-package com.gilang.network.example.action;
+package com.gilang.network.example.action.socket;
 
 import cn.hutool.db.Db;
 import cn.hutool.db.Entity;
