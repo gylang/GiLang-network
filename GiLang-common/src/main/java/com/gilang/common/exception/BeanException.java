@@ -1,6 +1,5 @@
 package com.gilang.common.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**

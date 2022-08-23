@@ -2,10 +2,8 @@ package com.gilang.network.netty.http;
 
 import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.config.HttpConfig;
-import com.gilang.network.config.WebsocketConfig;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.netty.NettyBaseServerRunner;
-import com.gilang.network.netty.ws.NettyWebSocketInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;

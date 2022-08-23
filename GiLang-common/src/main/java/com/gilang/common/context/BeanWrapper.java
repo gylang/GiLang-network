@@ -1,10 +1,7 @@
 package com.gilang.common.context;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 /**

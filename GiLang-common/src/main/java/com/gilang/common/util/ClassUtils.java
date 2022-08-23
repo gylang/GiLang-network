@@ -5,7 +5,6 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 

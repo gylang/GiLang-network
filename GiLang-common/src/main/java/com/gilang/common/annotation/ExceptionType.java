@@ -1,7 +1,5 @@
 package com.gilang.common.annotation;
 
-import com.gilang.common.enums.ServerTypeEnum;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
