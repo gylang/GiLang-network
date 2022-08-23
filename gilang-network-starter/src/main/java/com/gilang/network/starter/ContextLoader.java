@@ -7,6 +7,7 @@ import com.gilang.network.context.PropertiesWrite;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.event.EventContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
+import com.gilang.network.layer.access.ServerRunner;
 import com.gilang.network.layer.session.SocketSessionManager;
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,6 +43,9 @@ public class ContextLoader {
         for (AfterNetWorkContextInitialized afterNetWorkContextInitialized : afterNetWorkContextInitializedList) {
             afterNetWorkContextInitialized.post(serverContext);
         }
+        // 应用服务
+        List<ServerRunner> beanList = beanFactoryContext.getBeanList(ServerRunner.class);
+        serverContext.setServerRunner(beanList);
         return serverContext;
     }
 

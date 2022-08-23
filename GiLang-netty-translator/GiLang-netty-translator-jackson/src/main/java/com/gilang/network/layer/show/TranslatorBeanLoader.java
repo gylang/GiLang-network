@@ -1,8 +1,12 @@
 package com.gilang.network.layer.show;
 
 import com.gilang.common.context.BeanFactoryContext;
+import com.gilang.common.context.BeanLoadWrapper;
 import com.gilang.network.context.BeanLoader;
 import com.gilang.network.context.ServerContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author gylang
@@ -11,9 +15,10 @@ import com.gilang.network.context.ServerContext;
 public class TranslatorBeanLoader implements BeanLoader {
 
     @Override
-    public void scan(ServerContext serverContext) {
-        BeanFactoryContext beanFactoryContext = serverContext.getBeanFactoryContext();
-        beanFactoryContext.register(JacksonPackageTranslator.class.getName(), new JacksonPackageTranslator());
-        beanFactoryContext.register(HttpJsonTranslator.class.getName(), new HttpJsonTranslator());
+    public List<BeanLoadWrapper<?>> scan(ServerContext serverContext) {
+        List<BeanLoadWrapper<?>> beanLoadWrappers = new ArrayList<>();
+        beanLoadWrappers.add(new BeanLoadWrapper<>(JacksonPackageTranslator.class, JacksonPackageTranslator::new));
+        beanLoadWrappers.add(new BeanLoadWrapper<>(HttpJsonTranslator.class, HttpJsonTranslator::new));
+        return beanLoadWrappers;
     }
 }

@@ -2,9 +2,12 @@ package com.gilang.network.context;
 
 import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.event.EventContext;
+import com.gilang.network.layer.access.ServerRunner;
 import com.gilang.network.layer.session.SocketSessionManager;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * 启动im服务的上下文对象
@@ -25,6 +28,9 @@ public class ServerContext {
     private EventContext eventContext;
     /** session会话管理 */
     private SocketSessionManager socketSessionManager;
+
+    /** 应用服务 */
+    private List<ServerRunner> serverRunner;
 
     protected String logLevel = "INFO";
 }

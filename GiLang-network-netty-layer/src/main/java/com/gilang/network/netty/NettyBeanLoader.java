@@ -1,6 +1,7 @@
 package com.gilang.network.netty;
 
 import com.gilang.common.context.BeanFactoryContext;
+import com.gilang.common.context.BeanLoadWrapper;
 import com.gilang.network.context.BeanLoader;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.netty.http.NettyHttpInitializer;
@@ -9,6 +10,10 @@ import com.gilang.network.netty.http.NettyHttpServerRunner;
 import com.gilang.network.netty.socket.NettySocketInitializer;
 import com.gilang.network.netty.socket.NettySocketServerRunner;
 import com.gilang.network.netty.ws.NettyWebSocketInitializer;
+import com.gilang.network.netty.ws.NettyWebsocketServerRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author gylang
@@ -16,22 +21,24 @@ import com.gilang.network.netty.ws.NettyWebSocketInitializer;
  */
 public class NettyBeanLoader implements BeanLoader {
     @Override
-    public void scan(ServerContext serverContext) {
-        BeanFactoryContext beanFactoryContext = serverContext.getBeanFactoryContext();
+    public List<BeanLoadWrapper<?>> scan(ServerContext serverContext) {
+
+        List<BeanLoadWrapper<?>> beanLoadWrappers = new ArrayList<>();
+
 
         // 初始化
-        beanFactoryContext.register("NettyWebSocketInitializer", new NettyWebSocketInitializer());
-        beanFactoryContext.register("NettySocketInitializer", new NettySocketInitializer());
-        // netty websocket 启动器
-        beanFactoryContext.register("NettyWebsocketServerRunner", new NettySocketServerRunner());
-        // netty socket 启动器
-        beanFactoryContext.register("NettySocketServerRunner", new NettySocketServerRunner());
-        // netty 服务分发适配器
-        beanFactoryContext.register("NettySocketRouterInboundHandler", new NettySocketRouterInboundHandler());
+        beanLoadWrappers.add(new BeanLoadWrapper<>(NettyWebSocketInitializer.class, NettyWebSocketInitializer::new));
+        beanLoadWrappers.add(new BeanLoadWrapper<>(NettySocketInitializer.class, NettySocketInitializer::new));
+        // netty websocket 启器
+        beanLoadWrappers.add(new BeanLoadWrapper<>(NettyWebsocketServerRunner.class, NettyWebsocketServerRunner::new));
+        // netty socket 启器
+        beanLoadWrappers.add(new BeanLoadWrapper<>(NettySocketServerRunner.class, NettySocketServerRunner::new));
+        // netty 服务分发适器
+        beanLoadWrappers.add(new BeanLoadWrapper<>(NettySocketRouterInboundHandler.class, NettySocketRouterInboundHandler::new));
 
-        beanFactoryContext.register(NettyHttpRouterInboundHandler.class.getName(), new NettyHttpRouterInboundHandler());
-        beanFactoryContext.register(NettyHttpInitializer.class.getName(),new  NettyHttpInitializer());
-        beanFactoryContext.register(NettyHttpServerRunner.class.getName(),new  NettyHttpServerRunner());
-
+        beanLoadWrappers.add(new BeanLoadWrapper<>(NettyHttpRouterInboundHandler.class, NettyHttpRouterInboundHandler::new));
+        beanLoadWrappers.add(new BeanLoadWrapper<>(NettyHttpInitializer.class, NettyHttpInitializer::new));
+        beanLoadWrappers.add(new BeanLoadWrapper<>(NettyHttpServerRunner.class, NettyHttpServerRunner::new));
+        return beanLoadWrappers;
     }
 }
