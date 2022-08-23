@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Main-Class: com.gilang.network.example.ExampleServerStarter
+Class-Path: hutool-db-5.6.6.jar netty-transport-4.1.44.Final.jar netty-c
+ ommon-4.1.44.Final.jar jackson-databind-2.11.4.jar netty-handler-4.1.44
+ .Final.jar jackson-annotations-2.11.4.jar mysql-connector-java-8.0.29.j
+ ar netty-codec-http-4.1.44.Final.jar netty-buffer-4.1.44.Final.jar lomb
+ ok-1.18.12.jar jackson-core-2.11.4.jar logback-classic-1.2.3.jar hutool
+ -core-5.6.6.jar hutool-log-5.6.6.jar netty-resolver-4.1.44.Final.jar hu
+ tool-setting-5.6.6.jar netty-codec-4.1.44.Final.jar hutool-crypto-5.6.6
+ .jar protobuf-java-3.19.4.jar logback-core-1.2.3.jar slf4j-api-1.7.25.j
+ ar
+
