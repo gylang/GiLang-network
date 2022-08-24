@@ -1,6 +1,8 @@
 package com.gilang.network.starter;
 
 import com.gilang.network.context.ServerContext;
+import com.gilang.network.context.ServerContextArgument;
+import com.gilang.network.context.ServerContextWriter;
 import com.gilang.network.layer.access.ServerRunner;
 
 import java.util.List;
@@ -15,7 +17,7 @@ public class Application {
         ContextLoader contextLoader = new ContextLoader();
         contextLoader.setPropertiesPath("gilang.properties");
         ServerContext serverContext = contextLoader.contextLoad();
-
+        ServerContextWriter.setServerContextArgument(serverContext, new ServerContextArgument(args));
         List<ServerRunner> serverRunner = serverContext.getServerRunner();
         for (ServerRunner runner : serverRunner) {
             Runnable runnable = () -> {

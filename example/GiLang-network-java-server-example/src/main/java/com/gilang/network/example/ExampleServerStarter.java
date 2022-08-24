@@ -13,6 +13,6 @@ public class ExampleServerStarter {
 
         Application application = new Application();
         application.start(args);
-
+        System.out.println("你觉得我会执行吗");
     }
 }
