@@ -9,8 +9,8 @@ import com.gilang.common.annotation.Bean;
 import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.common.context.BeanLoadWrapper;
 import com.gilang.common.util.ClassUtils;
+import com.gilang.network.context.BeanLoadCondition;
 import com.gilang.network.context.BeanLoader;
-import com.gilang.network.context.BeanLoaderCondition;
 import com.gilang.network.context.ServerContext;
 import lombok.extern.slf4j.Slf4j;
 
@@ -63,17 +63,17 @@ public class BeanLoaderProcess {
      */
     private void filterBean(ServerContext serverContext, List<Props> propsList, List<BeanLoadWrapper<?>> beanLoadWrapperList) {
         // 条件判断
-        List<BeanLoaderCondition> conditionList = propsList.stream().map(p -> p.getStr("com.gilang.network.context.BeanLoaderCondition"))
+        List<BeanLoadCondition> conditionList = propsList.stream().map(p -> p.getStr("com.gilang.network.context.BeanLoadCondition"))
                 .filter(StrUtil::isNotBlank)
                 .map(ps -> StrUtil.split(ps, ','))
                 .filter(CollUtil::isNotEmpty)
                 .flatMap(List::stream)
-                .map(c -> ReflectUtil.newInstance(BeanLoaderCondition.class, c)).collect(Collectors.toList());
+                .map(c -> (BeanLoadCondition)ReflectUtil.newInstance(c)).collect(Collectors.toList());
 
         Set<BeanLoadWrapper<?>> waitRemove = new HashSet<>();
-        for (BeanLoaderCondition beanLoaderCondition : conditionList) {
+        for (BeanLoadCondition beanLoadCondition : conditionList) {
             for (BeanLoadWrapper<?> beanLoadWrapper : beanLoadWrapperList) {
-                if (beanLoaderCondition.judge(serverContext, beanLoadWrapper, beanLoadWrapperList)) {
+                if (!beanLoadCondition.judge(serverContext, beanLoadWrapper, beanLoadWrapperList)) {
                     waitRemove.add(beanLoadWrapper);
                 }
             }

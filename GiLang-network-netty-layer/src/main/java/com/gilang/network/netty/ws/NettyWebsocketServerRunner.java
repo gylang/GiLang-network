@@ -3,6 +3,7 @@ package com.gilang.network.netty.ws;
 import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.config.WebsocketConfig;
 import com.gilang.network.context.ServerContext;
+import com.gilang.network.layer.access.WebSocketServerRunner;
 import com.gilang.network.netty.NettyBaseServerRunner;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -16,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  * data 2022/6/30
  */
 @Slf4j
-public class NettyWebsocketServerRunner extends NettyBaseServerRunner {
+public class NettyWebsocketServerRunner extends NettyBaseServerRunner implements WebSocketServerRunner {
 
     @Override
     public void start(ServerContext serverContext) throws Exception {

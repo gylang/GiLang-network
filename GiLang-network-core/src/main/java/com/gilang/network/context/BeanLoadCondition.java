@@ -8,7 +8,7 @@ import java.util.List;
  * @author gylang
  * data 2022/7/6
  */
-public interface BeanLoaderCondition {
+public interface BeanLoadCondition {
 
     /**
      * 判断是否进行注册
