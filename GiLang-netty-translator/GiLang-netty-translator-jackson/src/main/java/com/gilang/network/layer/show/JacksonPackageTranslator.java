@@ -5,6 +5,7 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gilang.common.annotation.TranslatorType;
+import com.gilang.network.translator.PackageTranslator;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

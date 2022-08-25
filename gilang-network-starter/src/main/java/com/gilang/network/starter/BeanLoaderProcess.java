@@ -30,7 +30,6 @@ public class BeanLoaderProcess {
     public void process(ServerContext serverContext, List<Props> propsList) {
         List<BeanLoadWrapper<?>> beanLoadWrapperList = scan(serverContext, propsList);
         filterBean(serverContext, propsList, beanLoadWrapperList);
-
         register(serverContext, beanLoadWrapperList);
     }
 

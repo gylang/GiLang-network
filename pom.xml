@@ -53,11 +53,7 @@
                 <artifactId>gilang-network-core</artifactId>
                 <version>${gilang-network-version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.gilang</groupId>
-                <artifactId>gilang-network-netty-layer</artifactId>
-                <version>${gilang-network-version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>com.gilang</groupId>
                 <artifactId>gilang-network-starter</artifactId>

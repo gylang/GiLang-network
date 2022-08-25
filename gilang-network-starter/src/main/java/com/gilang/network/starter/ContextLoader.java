@@ -8,8 +8,7 @@ import com.gilang.network.context.ServerContext;
 import com.gilang.network.context.ServerContextWriter;
 import com.gilang.network.event.EventContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
-import com.gilang.network.layer.access.ServerRunner;
-import com.gilang.network.layer.session.SocketSessionManager;
+import com.gilang.network.ServerRunner;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
@@ -41,7 +40,6 @@ public class ContextLoader {
         List<AfterNetWorkContextInitialized> afterNetWorkContextInitializedList = beanFactoryContext.getBeanList(AfterNetWorkContextInitialized.class);
 
         ServerContextWriter.setEventContext(serverContext, beanFactoryContext.getPrimaryBean(EventContext.class));
-        ServerContextWriter.setSocketSessionManager(serverContext, beanFactoryContext.getPrimaryBean(SocketSessionManager.class));
         for (AfterNetWorkContextInitialized afterNetWorkContextInitialized : afterNetWorkContextInitializedList) {
             afterNetWorkContextInitialized.post(serverContext);
         }

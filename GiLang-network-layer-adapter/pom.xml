@@ -12,7 +12,9 @@
     <artifactId>gilang-network-layer-adapter</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>GiLang-network-netty-layer</module>
+        <module>GiLang-network-netty-websocket-layer</module>
+        <module>GiLang-network-netty-http-layer</module>
+        <module>GiLang-network-netty-socket-layer</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

@@ -2,8 +2,7 @@ package com.gilang.network.context;
 
 import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.event.EventContext;
-import com.gilang.network.layer.access.ServerRunner;
-import com.gilang.network.layer.session.SocketSessionManager;
+import com.gilang.network.ServerRunner;
 
 import java.util.List;
 
@@ -22,8 +21,7 @@ public class ServerContext {
     protected PropertiesVisitor propertiesVisitor;
     /** 事件处理器 */
     private EventContext eventContext;
-    /** session会话管理 */
-    private SocketSessionManager socketSessionManager;
+
 
     /** 应用服务 */
     private List<ServerRunner> serverRunner;
@@ -57,13 +55,7 @@ public class ServerContext {
         this.eventContext = eventContext;
     }
 
-    public SocketSessionManager getSocketSessionManager() {
-        return socketSessionManager;
-    }
 
-    protected void setSocketSessionManager(SocketSessionManager socketSessionManager) {
-        this.socketSessionManager = socketSessionManager;
-    }
 
     public List<ServerRunner> getServerRunner() {
         return serverRunner;

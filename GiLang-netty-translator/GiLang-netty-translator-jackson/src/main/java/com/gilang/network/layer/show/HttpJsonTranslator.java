@@ -1,7 +1,7 @@
 package com.gilang.network.layer.show;
 
 import com.gilang.common.domian.http.HttpDataRequest;
-import com.gilang.network.layer.show.http.HttpTranslator;
+import com.gilang.network.translator.HttpTranslator;
 
 import java.io.IOException;
 

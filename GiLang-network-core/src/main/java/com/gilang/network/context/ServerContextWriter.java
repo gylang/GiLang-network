@@ -2,8 +2,7 @@ package com.gilang.network.context;
 
 import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.network.event.EventContext;
-import com.gilang.network.layer.access.ServerRunner;
-import com.gilang.network.layer.session.SocketSessionManager;
+import com.gilang.network.ServerRunner;
 
 import java.util.List;
 
@@ -25,10 +24,7 @@ public class ServerContextWriter {
         serverContext.setEventContext(eventContext);
     }
 
-    public static void setSocketSessionManager(ServerContext serverContext, SocketSessionManager socketSessionManager) {
-        serverContext.setSocketSessionManager(socketSessionManager);
 
-    }
 
     public static void setServerRunner(ServerContext serverContext, List<ServerRunner> serverRunner) {
         serverContext.setServerRunner(serverRunner);

@@ -3,7 +3,7 @@ package com.gilang.network.example.action.http;
 import com.gilang.common.annotation.RequestMapping;
 import com.gilang.common.domian.http.HttpDataRequest;
 import com.gilang.common.domian.http.HttpDataResponse;
-import com.gilang.network.layer.app.http.HttpAction;
+import com.gilang.network.http.HttpAction;
 
 /**
  * @author gylang

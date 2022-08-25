@@ -7,13 +7,13 @@ import cn.hutool.db.Entity;
 import com.gilang.common.annotation.SocketActionType;
 import com.gilang.common.domian.socket.SocketDataPackage;
 import com.gilang.network.context.ServerContext;
-import com.gilang.network.context.SocketSessionContext;
+import com.gilang.network.context.SessionContext;
 import com.gilang.network.converter.PackageConverter;
 import com.gilang.network.example.constant.CodeConst;
 import com.gilang.network.example.domain.db.User;
 import com.gilang.network.example.domain.payload.res.CodeRes;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
-import com.gilang.network.layer.app.socket.MessageAction;
+import com.gilang.network.socket.MessageAction;
 
 import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
@@ -27,7 +27,7 @@ public class RegisterAction implements MessageAction<User>, AfterNetWorkContextI
 
 
     @Override
-    public void doAction(SocketDataPackage<User> dataPackage, SocketSessionContext socketSessionContext) {
+    public void doAction(SocketDataPackage<User> dataPackage, SessionContext socketSessionContext) {
 
         User payload = dataPackage.getPayload();
         CompletableFuture.runAsync(() -> {
