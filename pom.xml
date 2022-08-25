@@ -12,10 +12,11 @@
     <modules>
         <module>gilang-network-core</module>
         <module>gilang-common</module>
-        <module>gilang-network-netty-layer</module>
         <module>gilang-netty-translator</module>
         <module>example</module>
         <module>gilang-network-starter</module>
+        <module>GiLang-network-layer-adapter</module>
+        <module>GiLang-network-protocol</module>
 
     </modules>
 
