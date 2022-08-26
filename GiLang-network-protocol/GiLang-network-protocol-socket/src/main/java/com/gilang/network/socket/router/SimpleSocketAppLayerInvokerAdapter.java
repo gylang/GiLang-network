@@ -1,4 +1,4 @@
-package com.gilang.network.socket;
+package com.gilang.network.socket.router;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import com.gilang.common.annotation.SocketActionType;
@@ -7,9 +7,10 @@ import com.gilang.common.context.BeanFactoryContext;
 import com.gilang.common.domian.socket.SocketDataPackage;
 import com.gilang.common.util.ClassUtils;
 import com.gilang.network.context.ServerContext;
-import com.gilang.network.context.SessionContext;
 import com.gilang.network.exception.MultiCommandException;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
+import com.gilang.network.socket.context.SocketDoActionHookHolder;
+import com.gilang.network.socket.context.SocketSessionContext;
 import com.gilang.network.translator.PackageTranslator;
 
 import java.lang.reflect.Type;
@@ -54,7 +55,7 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketSocketAppLayerInvo
     }
 
     @Override
-    public void route(SocketDataPackage<?> dataPackage, SessionContext sessionContext) {
+    public void route(SocketDataPackage<?> dataPackage, SocketSessionContext socketSessionContext) {
 
         byte cmd = dataPackage.getCmd();
         MessageAction messageAction = cmdActionMap.get(cmd);
@@ -62,11 +63,11 @@ public class SimpleSocketAppLayerInvokerAdapter extends SocketSocketAppLayerInvo
             return;
         }
         if (null != actionHookHolder) {
-            actionHookHolder.doActionBefore(dataPackage, sessionContext, messageAction);
-            messageAction.doAction(dataPackage, sessionContext);
-            actionHookHolder.doActionAfter(dataPackage, sessionContext, messageAction);
+            actionHookHolder.doActionBefore(dataPackage, socketSessionContext, messageAction);
+            messageAction.doAction(dataPackage, socketSessionContext);
+            actionHookHolder.doActionAfter(dataPackage, socketSessionContext, messageAction);
         } else {
-            messageAction.doAction(dataPackage, sessionContext);
+            messageAction.doAction(dataPackage, socketSessionContext);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.gilang.network.http;
+package com.gilang.network.http.load;
 
 import com.gilang.common.domian.http.HttpServiceWrapper;
 import com.gilang.network.context.ServerContext;

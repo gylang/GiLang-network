@@ -1,4 +1,4 @@
-package com.gilang.network.socket;
+package com.gilang.network.socket.config;
 
 import lombok.Data;
 

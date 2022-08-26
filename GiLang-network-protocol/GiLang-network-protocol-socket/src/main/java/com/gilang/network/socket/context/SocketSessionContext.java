@@ -1,4 +1,4 @@
-package com.gilang.network.context;
+package com.gilang.network.socket.context;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import lombok.Data;
  * data 2022/6/16
  */
 @Data
-public abstract class SessionContext {
+public abstract class SocketSessionContext {
 
     /** 会话id */
     private String id;

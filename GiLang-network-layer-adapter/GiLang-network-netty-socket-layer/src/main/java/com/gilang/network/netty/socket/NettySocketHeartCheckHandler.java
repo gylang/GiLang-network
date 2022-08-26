@@ -1,8 +1,8 @@
 package com.gilang.network.netty.socket;
 
 import com.gilang.network.context.ServerContext;
-import com.gilang.network.socket.SocketConfig;
-import com.gilang.network.socket.SocketSessionManager;
+import com.gilang.network.socket.config.SocketConfig;
+import com.gilang.network.socket.context.SocketSessionManager;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -93,7 +93,7 @@ public class NettySocketHeartCheckHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
 
-        NettySessionContext sessionContext = new NettySessionContext(ctx);
+        NettySocketSessionContext sessionContext = new NettySocketSessionContext(ctx);
         String sessionKey = ctx.channel().id().asLongText();
         sessionContext.setId(sessionKey);
         socketSessionManager.register(sessionKey, sessionContext);

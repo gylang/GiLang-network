@@ -1,12 +1,10 @@
-package com.gilang.network.websocket;
+package com.gilang.network.websocket.load;
 
 import com.gilang.common.context.BeanLoadWrapper;
 import com.gilang.network.context.BeanLoader;
 import com.gilang.network.context.PropertiesVisitor;
 import com.gilang.network.context.ServerContext;
-import com.gilang.network.event.EventContext;
-import com.gilang.network.socket.SocketSessionManagerImpl;
-import com.gilang.network.util.MessageUtil;
+import com.gilang.network.websocket.WebsocketConfig;
 
 import java.util.ArrayList;
 import java.util.List;

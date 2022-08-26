@@ -3,7 +3,7 @@ package com.gilang.network.netty.websocket;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.gilang.common.domian.socket.SocketDataPackage;
-import com.gilang.network.socket.SocketSocketAppLayerInvokerAdapter;
+import com.gilang.network.socket.router.SocketSocketAppLayerInvokerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;

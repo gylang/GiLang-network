@@ -1,4 +1,4 @@
-package com.gilang.network.socket;
+package com.gilang.network.socket.router;
 
 import com.gilang.common.domian.socket.SocketDataPackage;
 

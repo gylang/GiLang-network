@@ -1,6 +1,6 @@
-package com.gilang.network.socket;
+package com.gilang.network.socket.context;
 
-import com.gilang.network.context.SessionContext;
+import com.gilang.network.socket.context.SocketSessionContext;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -39,9 +39,9 @@ public interface SocketSessionManager {
      * 注册会话
      *
      * @param sessionKey     会话关键字
-     * @param sessionContext 会话上下文
+     * @param socketSessionContext 会话上下文
      */
-    void register(String sessionKey, SessionContext sessionContext);
+    void register(String sessionKey, SocketSessionContext socketSessionContext);
 
     /**
      * 移除会话
@@ -56,7 +56,7 @@ public interface SocketSessionManager {
      * @param sessionKey 会话关键字
      * @return 会话上下文
      */
-    SessionContext getSessionBySessionKey(String sessionKey);
+    SocketSessionContext getSessionBySessionKey(String sessionKey);
 
     /**
      * 通过别名获取会话上下文
@@ -64,12 +64,12 @@ public interface SocketSessionManager {
      * @param aliasKey 别名
      * @return 会话上下文
      */
-    SessionContext getSessionByAliasKey(String aliasKey);
+    SocketSessionContext getSessionByAliasKey(String aliasKey);
 
     /**
      * 查询符合条件的会话
      * @param query 条件
      * @return 会话列表
      */
-    List<SessionContext> querySession(Predicate<SessionContext> query);
+    List<SocketSessionContext> querySession(Predicate<SocketSessionContext> query);
 }

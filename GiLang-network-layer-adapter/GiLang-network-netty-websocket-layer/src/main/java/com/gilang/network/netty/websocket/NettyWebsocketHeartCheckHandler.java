@@ -2,7 +2,7 @@ package com.gilang.network.netty.websocket;
 
 import com.gilang.network.websocket.WebsocketConfig;
 import com.gilang.network.context.ServerContext;
-import com.gilang.network.socket.SocketSessionManager;
+import com.gilang.network.socket.context.SocketSessionManager;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -93,7 +93,7 @@ public class NettyWebsocketHeartCheckHandler extends ChannelInboundHandlerAdapte
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
 
-        NettyWebsocketSessionContext sessionContext = new NettyWebsocketSessionContext(ctx);
+        NettyWebsocketSocketSessionContext sessionContext = new NettyWebsocketSocketSessionContext(ctx);
         String sessionKey = ctx.channel().id().asLongText();
         sessionContext.setId(sessionKey);
        socketSessionManager.register(sessionKey, sessionContext);

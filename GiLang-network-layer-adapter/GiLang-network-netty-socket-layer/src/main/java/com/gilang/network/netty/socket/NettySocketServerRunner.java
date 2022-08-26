@@ -1,7 +1,7 @@
 package com.gilang.network.netty.socket;
 
 import com.gilang.common.context.BeanFactoryContext;
-import com.gilang.network.socket.SocketConfig;
+import com.gilang.network.socket.config.SocketConfig;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.socket.SocketServerRunner;
 import io.netty.bootstrap.ServerBootstrap;

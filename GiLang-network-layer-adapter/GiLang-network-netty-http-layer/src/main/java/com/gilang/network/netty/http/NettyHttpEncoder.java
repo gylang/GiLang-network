@@ -1,7 +1,7 @@
 package com.gilang.network.netty.http;
 
 import com.gilang.common.domian.http.HttpDataResponse;
-import com.gilang.network.http.HttpAppLayerInvokerAdapter;
+import com.gilang.network.http.router.HttpAppLayerInvokerAdapter;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;

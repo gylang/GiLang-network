@@ -4,7 +4,7 @@ import com.gilang.common.annotation.RequestMapping;
 import com.gilang.common.domian.http.HttpDataRequest;
 import com.gilang.common.domian.http.HttpDataResponse;
 import com.gilang.common.exception.BaseException;
-import com.gilang.network.http.HttpAction;
+import com.gilang.network.http.router.HttpAction;
 
 /**
  * @author 23516

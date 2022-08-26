@@ -3,7 +3,7 @@ package com.gilang.network.netty.http;
 import com.gilang.common.domian.http.HttpDataRequest;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
-import com.gilang.network.http.HttpAppLayerInvokerAdapter;
+import com.gilang.network.http.router.HttpAppLayerInvokerAdapter;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

@@ -1,4 +1,4 @@
-package com.gilang.network.http.handler;
+package com.gilang.network.http.exception;
 
 import com.gilang.common.domian.http.HttpDataRequest;
 import com.gilang.common.domian.http.HttpDataResponse;

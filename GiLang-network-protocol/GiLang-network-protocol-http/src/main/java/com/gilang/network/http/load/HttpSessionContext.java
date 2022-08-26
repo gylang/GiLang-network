@@ -1,4 +1,4 @@
-package com.gilang.network.http;
+package com.gilang.network.http.load;
 
 import lombok.Data;
 

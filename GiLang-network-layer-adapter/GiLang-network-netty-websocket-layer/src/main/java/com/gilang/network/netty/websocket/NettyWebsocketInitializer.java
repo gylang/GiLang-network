@@ -1,6 +1,6 @@
 package com.gilang.network.netty.websocket;
 
-import com.gilang.network.socket.SocketSocketAppLayerInvokerAdapter;
+import com.gilang.network.socket.router.SocketSocketAppLayerInvokerAdapter;
 import com.gilang.network.websocket.WebsocketConfig;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;

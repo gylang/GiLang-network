@@ -7,7 +7,7 @@ import com.gilang.common.util.OrderUtil;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.context.SessionContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
-import com.gilang.network.http.HttpSessionContext;
+import com.gilang.network.http.load.HttpSessionContext;
 
 import java.util.List;
 

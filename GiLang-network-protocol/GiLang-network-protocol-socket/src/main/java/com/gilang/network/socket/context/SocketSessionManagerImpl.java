@@ -1,7 +1,8 @@
-package com.gilang.network.socket;
+package com.gilang.network.socket.context;
 
 import cn.hutool.core.map.BiMap;
-import com.gilang.network.context.SessionContext;
+import com.gilang.network.socket.context.SocketSessionContext;
+import com.gilang.network.socket.context.SocketSessionManager;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class SocketSessionManagerImpl implements SocketSessionManager {
     /** 别名绑定 k:aliasKey v:sessionLey */
     private final BiMap<String, String> aliasMapping = new BiMap<>(new ConcurrentHashMap<>());
     /** 会话缓存 */
-    private final Map<String, SessionContext> sessionContextMap = new ConcurrentHashMap<>();
+    private final Map<String, SocketSessionContext> sessionContextMap = new ConcurrentHashMap<>();
 
 
     @Override
@@ -43,8 +44,8 @@ public class SocketSessionManagerImpl implements SocketSessionManager {
 
 
     @Override
-    public void register(String sessionKey, SessionContext sessionContext) {
-        sessionContextMap.put(sessionKey, sessionContext);
+    public void register(String sessionKey, SocketSessionContext socketSessionContext) {
+        sessionContextMap.put(sessionKey, socketSessionContext);
     }
 
 
@@ -54,12 +55,12 @@ public class SocketSessionManagerImpl implements SocketSessionManager {
     }
 
     @Override
-    public SessionContext getSessionBySessionKey(String sessionKey) {
+    public SocketSessionContext getSessionBySessionKey(String sessionKey) {
         return sessionContextMap.get(sessionKey);
     }
 
     @Override
-    public SessionContext getSessionByAliasKey(String aliasKey) {
+    public SocketSessionContext getSessionByAliasKey(String aliasKey) {
         String sessionKey = aliasMapping.get(aliasKey);
         if (null != sessionKey) {
             return sessionContextMap.get(sessionKey);
@@ -68,7 +69,7 @@ public class SocketSessionManagerImpl implements SocketSessionManager {
     }
 
     @Override
-    public List<SessionContext> querySession(Predicate<SessionContext> query) {
+    public List<SocketSessionContext> querySession(Predicate<SocketSessionContext> query) {
         return sessionContextMap.values().stream().filter(query).collect(Collectors.toList());
     }
 

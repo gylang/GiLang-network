@@ -1,7 +1,7 @@
 package com.gilang.network.netty.websocket;
 
 import com.gilang.common.domian.socket.SocketDataPackage;
-import com.gilang.network.socket.SocketSocketAppLayerInvokerAdapter;
+import com.gilang.network.socket.router.SocketSocketAppLayerInvokerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
