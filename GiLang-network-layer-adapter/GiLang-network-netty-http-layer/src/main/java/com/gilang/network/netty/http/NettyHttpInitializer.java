@@ -2,8 +2,8 @@ package com.gilang.network.netty.http;
 
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.hook.AfterNetWorkContextInitialized;
-import com.gilang.network.http.router.HttpAppLayerInvokerAdapter;
 import com.gilang.network.http.config.HttpConfig;
+import com.gilang.network.http.router.HttpAppLayerInvokerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;

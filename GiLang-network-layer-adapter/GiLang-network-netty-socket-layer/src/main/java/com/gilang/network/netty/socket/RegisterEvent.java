@@ -1,7 +1,7 @@
 package com.gilang.network.netty.socket;
 
-import com.gilang.network.socket.context.SocketSessionContext;
 import com.gilang.network.event.Event;
+import com.gilang.network.socket.context.SocketSessionContext;
 import lombok.Getter;
 
 /**

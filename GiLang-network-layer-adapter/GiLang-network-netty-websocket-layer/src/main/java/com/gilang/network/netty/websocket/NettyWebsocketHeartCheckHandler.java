@@ -1,8 +1,8 @@
 package com.gilang.network.netty.websocket;
 
-import com.gilang.network.websocket.WebsocketConfig;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.socket.context.SocketSessionManager;
+import com.gilang.network.websocket.WebsocketConfig;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleStateEvent;

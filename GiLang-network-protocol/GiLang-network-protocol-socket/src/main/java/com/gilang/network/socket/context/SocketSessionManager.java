@@ -1,7 +1,5 @@
 package com.gilang.network.socket.context;
 
-import com.gilang.network.socket.context.SocketSessionContext;
-
 import java.util.List;
 import java.util.function.Predicate;
 

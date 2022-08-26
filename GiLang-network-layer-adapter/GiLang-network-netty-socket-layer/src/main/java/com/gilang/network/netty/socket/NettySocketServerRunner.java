@@ -1,9 +1,9 @@
 package com.gilang.network.netty.socket;
 
 import com.gilang.common.context.BeanFactoryContext;
-import com.gilang.network.socket.config.SocketConfig;
 import com.gilang.network.context.ServerContext;
 import com.gilang.network.socket.SocketServerRunner;
+import com.gilang.network.socket.config.SocketConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
