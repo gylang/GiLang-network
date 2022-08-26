@@ -2,6 +2,9 @@ package com.gilang.network.http.router;
 
 import com.gilang.common.domian.http.HttpDataRequest;
 import com.gilang.common.domian.http.HttpDataResponse;
+import com.gilang.common.domian.http.HttpServiceWrapper;
+
+import java.lang.reflect.Type;
 
 /**
  * @author gylang
@@ -12,10 +15,10 @@ public interface HttpAppLayerInvokerAdapter extends HttpRouter<HttpDataRequest<?
     /**
      * 下层传入解析调用的参数类型
      *
-     * @param uri 下层参数用户解析的数据
+     * @param request 请求对象
      * @return 参数类型
      */
-    <T> Class<T> resolveInvokeParamType(String method,  String uri);
+    public HttpServiceWrapper searchServiceWrapper(HttpDataRequest<?> request);
 
     /**
      * 将对象翻译成java对象
@@ -25,7 +28,7 @@ public interface HttpAppLayerInvokerAdapter extends HttpRouter<HttpDataRequest<?
      * @param dataRequest 请求对象
      * @return java对象
      */
-    Object toObject(String contentType, byte[] bs, Class<?> type, HttpDataRequest<?> dataRequest);
+    Object toObject(String contentType, byte[] bs, Type type, HttpDataRequest<?> dataRequest);
 
     /**
      * 将对象翻译成byte数组

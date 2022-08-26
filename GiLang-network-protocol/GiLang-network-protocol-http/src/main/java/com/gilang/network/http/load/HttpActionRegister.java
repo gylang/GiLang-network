@@ -26,20 +26,22 @@ public class HttpActionRegister implements HttpInvokerScanner {
         List<HttpAction> beanList = serverContext.getBeanFactoryContext().getBeanList(HttpAction.class);
         List<HttpServiceWrapper> serviceWrappers = new ArrayList<>();
         for (HttpAction httpAction : beanList) {
-            RequestMapping annotation = ClassUtils.recurseFindAnnotation(ClassUtils.getUserClass(httpAction.getClass()), RequestMapping.class);
+            Class<?> userClass = ClassUtils.getUserClass(httpAction.getClass());
+            RequestMapping annotation = ClassUtils.recurseFindAnnotation(userClass, RequestMapping.class);
             if (null != annotation) {
-                HttpServiceWrapper httpServiceWrapper = new HttpServiceWrapper();
-                httpServiceWrapper.setPath(annotation.path());
-                httpServiceWrapper.setMethods(annotation.method());
-                httpServiceWrapper.setContentType(annotation.contentType());
-                httpServiceWrapper.setHttpInvokeHelper(new HttpInvokeHelper() {
-                    @Override
-                    public <T> Object doAction(HttpDataRequest<T> request, HttpDataResponse response) {
-                        httpAction.doAction(request, response);
-                        return response;
-                    }
-                });
-                serviceWrappers.add(httpServiceWrapper);
+                HttpServiceWrapper serviceWrapper = HttpServiceWrapper.builder()
+                        .path(annotation.path())
+                        .methods(annotation.method())
+                        .contentType(annotation.contentType())
+                        .type(ClassUtils.getTypeArgument(userClass, 0))
+                        .httpInvokeHelper(new HttpInvokeHelper() {
+                            @Override
+                            public <T> Object doAction(HttpDataRequest<T> request, HttpDataResponse response) {
+                                httpAction.doAction(request, response);
+                                return response;
+                            }
+                        }).build();
+                serviceWrappers.add(serviceWrapper);
             }
         }
 

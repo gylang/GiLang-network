@@ -1,9 +1,11 @@
 package com.gilang.network.layer.show;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.gilang.common.domian.http.HttpDataRequest;
 import com.gilang.network.translator.HttpTranslator;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 /**
  * @author gylang
@@ -28,9 +30,14 @@ public class HttpJsonTranslator extends JacksonPackageTranslator implements Http
     }
 
     @Override
-    public Object toObject(byte[] bs, Class<?> type, HttpDataRequest<?> httpDataRequest) {
+    public Object toObject(byte[] bs, Type type, HttpDataRequest<?> httpDataRequest) {
         try {
-            return JsonUtil.mapper.readValue(bs, type);
+            return JsonUtil.mapper.readValue(bs, new TypeReference<Object>() {
+                @Override
+                public Type getType() {
+                    return type;
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException("Jackson deserialize exception : " + e.getMessage());

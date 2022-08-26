@@ -74,6 +74,7 @@ public class HttpDataRequest<T> extends DataPackage<T> {
      */
     private Map<String, String> pathVariables = new HashMap<>();
 
+    private HttpServiceWrapper serviceWrapper;
     /**
      * 设置请求内容类型
      *

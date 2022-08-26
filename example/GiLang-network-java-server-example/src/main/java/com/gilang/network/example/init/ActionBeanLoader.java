@@ -31,11 +31,10 @@ public class ActionBeanLoader implements BeanLoader {
         supplierList.add(new BeanLoadWrapper<>(SendMessageAction.class, SendMessageAction::new));
         supplierList.add(new BeanLoadWrapper<>(OnlineUserListAction.class, OnlineUserListAction::new));
         supplierList.add(new BeanLoadWrapper<>(RegisterAction.class, RegisterAction::new));
-        supplierList.add(new BeanLoadWrapper<>(ExceptionApi.class, ExceptionApi::new));
 
-
-        supplierList.add(new BeanLoadWrapper<>(HelloApi.class, HelloApi::new));
-        supplierList.add(new BeanLoadWrapper<>(CorsApi.class, CorsApi::new));
+//        supplierList.add(new BeanLoadWrapper<>(ExceptionApi.class, ExceptionApi::new));
+//        supplierList.add(new BeanLoadWrapper<>(HelloApi.class, HelloApi::new));
+//        supplierList.add(new BeanLoadWrapper<>(CorsApi.class, CorsApi::new));
         return supplierList;
     }
 }

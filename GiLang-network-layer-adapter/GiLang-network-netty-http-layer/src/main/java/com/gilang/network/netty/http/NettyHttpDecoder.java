@@ -2,6 +2,7 @@ package com.gilang.network.netty.http;
 
 import com.gilang.common.domian.http.HttpCookie;
 import com.gilang.common.domian.http.HttpDataRequest;
+import com.gilang.common.domian.http.HttpServiceWrapper;
 import com.gilang.network.http.router.HttpAppLayerInvokerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
@@ -35,10 +36,10 @@ public class NettyHttpDecoder extends MessageToMessageDecoder<FullHttpRequest> {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, FullHttpRequest httpRequest, List<Object> list) throws Exception {
 
-        Class<?> type = httpAppLayerInvokerAdapter.resolveInvokeParamType(httpRequest.method().name(), httpRequest.uri());
+
         HttpHeaders headers = httpRequest.headers();
         String contentType = headers.get(HttpHeaderNames.CONTENT_TYPE);
-        HttpDataRequest<Object> dataRequest = new HttpDataRequest<>(type);
+        HttpDataRequest<Object> dataRequest = new HttpDataRequest<>();
         dataRequest.setUri(httpRequest.uri());
         dataRequest.setHost(httpRequest.headers().get(HttpHeaderNames.HOST));
         dataRequest.setMethod(httpRequest.method().name());
@@ -61,7 +62,11 @@ public class NettyHttpDecoder extends MessageToMessageDecoder<FullHttpRequest> {
             }
         }
         dataRequest.setRemoteHost(channelHandlerContext.channel().remoteAddress().toString());
-        Object object = httpAppLayerInvokerAdapter.toObject(contentType, httpRequest.content().array(), type, dataRequest);
+        HttpServiceWrapper httpServiceWrapper = httpAppLayerInvokerAdapter.searchServiceWrapper(dataRequest);
+        byte[] data = new byte[httpRequest.content().writerIndex()];
+        dataRequest.setServiceWrapper(httpServiceWrapper);
+        httpRequest.content().readBytes(data);
+        Object object = httpAppLayerInvokerAdapter.toObject(contentType, data, httpServiceWrapper.getType(), dataRequest);
         dataRequest.setPayload(object);
         list.add(dataRequest);
     }

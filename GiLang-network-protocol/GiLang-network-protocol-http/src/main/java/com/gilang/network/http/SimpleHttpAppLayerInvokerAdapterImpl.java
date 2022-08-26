@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.TypeUtil;
 import com.gilang.common.domian.http.HttpDataRequest;
 import com.gilang.common.domian.http.HttpDataResponse;
 import com.gilang.common.domian.http.HttpServiceWrapper;
@@ -24,6 +25,7 @@ import com.gilang.network.http.router.HttpAppLayerInvokerAdapter;
 import com.gilang.network.translator.HttpTranslator;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -56,22 +58,14 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
             return;
         }
         List<HttpIntercept> httpIntercepts = findIntercept(uri);
-        HttpServiceWrapper serviceWrapper = null;
+        HttpServiceWrapper serviceWrapper = httpDataRequest.getServiceWrapper();
         try {
-            // 地址查询
-            UrlSearchTree<HttpServiceWrapper> searchTree = urlSearchTreePool.get(httpDataRequest.getMethod().toUpperCase());
-            if (null == searchTree) {
-                throw new Http404Exception(httpDataRequest);
-            }
-            // 寻找业务执行
-            UrlSearchTree.PathLeaf<HttpServiceWrapper> pathLeaf = searchTree.findPathLeaf(uri);
-            if (null == pathLeaf) {
+            if (null == serviceWrapper) {
                 throw new Http404Exception(httpDataRequest);
             }
             // 设置路径参数
-            setVariable(httpDataRequest, uri, pathLeaf);
+
             // 执行拦截器
-            serviceWrapper = pathLeaf.getPayload();
             if (CollUtil.isNotEmpty(httpIntercepts)) {
                 for (HttpIntercept httpIntercept : httpIntercepts) {
                     boolean b = httpIntercept.preHandle(httpDataRequest, httpDataResponse, serviceWrapper);
@@ -118,6 +112,19 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
 
     }
 
+
+    private UrlSearchTree.PathLeaf<HttpServiceWrapper> searchService(HttpDataRequest<?> request, String uri) {
+        // 地址查询
+        UrlSearchTree<HttpServiceWrapper> searchTree = urlSearchTreePool.get(request.getMethod().toUpperCase());
+        if (null == searchTree) {
+           return null;
+        }
+        // 寻找业务执行
+        UrlSearchTree.PathLeaf<HttpServiceWrapper> pathLeaf = searchTree.findPathLeaf(uri);
+        setVariable(request, uri, pathLeaf);
+        return pathLeaf;
+    }
+
     private List<HttpIntercept> findIntercept(String uri) {
         List<HttpIntercept> findIntercepts = new ArrayList<>();
         for (Map.Entry<String, List<HttpIntercept>> entry : httpInterceptPool.entrySet()) {
@@ -137,16 +144,16 @@ public class SimpleHttpAppLayerInvokerAdapterImpl implements HttpAppLayerInvoker
     }
 
 
-    @Override
-    public <T> Class<T> resolveInvokeParamType(String method, String uri) {
-        return null;
+    public HttpServiceWrapper searchServiceWrapper(HttpDataRequest<?> request) {
+        UrlSearchTree.PathLeaf<HttpServiceWrapper> httpServiceWrapperPathLeaf = searchService(request, request.getUri());
+        return null != httpServiceWrapperPathLeaf? httpServiceWrapperPathLeaf.getPayload() : null;
     }
 
     @Override
-    public Object toObject(String contentType, byte[] bs, Class<?> type, HttpDataRequest<?> dataRequest) {
-        if (null == type || Void.class == type) {
+    public Object toObject(String contentType, byte[] bs, Type type, HttpDataRequest<?> dataRequest) {
+        if (null == type || Void.TYPE == type) {
             return null;
-        } else if (ClassUtils.isSimpleValueType(type)) {
+        } else if (ClassUtils.isSimpleValueType(TypeUtil.getClass(type))) {
             return Convert.convert(type, new String(bs, StandardCharsets.UTF_8));
         }
         return httpTranslatorPool.get(contentType).toObject(bs, type, dataRequest);

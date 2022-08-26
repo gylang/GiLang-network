@@ -2,6 +2,8 @@ package com.gilang.network.translator;
 
 import com.gilang.common.domian.http.HttpDataRequest;
 
+import java.lang.reflect.Type;
+
 /**
  * @author gylang
  * data 2022/8/11
@@ -31,5 +33,5 @@ public interface HttpTranslator {
      * @param type            类型
      * @param httpDataRequest 请求对象
      */
-     Object toObject(byte[] bs, Class<?> type, HttpDataRequest<?> httpDataRequest);
+     Object toObject(byte[] bs, Type type, HttpDataRequest<?> httpDataRequest);
 }

@@ -1,21 +1,30 @@
 package com.gilang.common.domian.http;
 
 import com.gilang.common.enums.RequestMethod;
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+
+import java.lang.reflect.Type;
 
 /**
  * @author gylang
  * data 2022/8/10
  */
-@Data
+@Getter
+@Builder
+@AllArgsConstructor
 public class HttpServiceWrapper {
 
     /** 请求业务路径 */
-    private String path;
+    private final String path;
     /** 方法 */
-    private RequestMethod[] methods;
+    private final RequestMethod[] methods;
     /** 响应类型 */
-    private String contentType;
+    private final String contentType;
+
+    private final Type type;
     /** 服务调用帮助器 */
-    private HttpInvokeHelper httpInvokeHelper;
+    private final HttpInvokeHelper httpInvokeHelper;
+
 }
