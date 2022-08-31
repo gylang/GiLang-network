@@ -17,6 +17,7 @@ import java.util.List;
 public class HttpFilterDelegate implements AfterNetWorkContextInitialized {
 
     private List<HttpFilterChain> orderFilter;
+    private HttpFilterChain firstFilter;
 
 
     /**
@@ -27,13 +28,7 @@ public class HttpFilterDelegate implements AfterNetWorkContextInitialized {
      */
     public void doFilter(HttpDataRequest<?> request, HttpDataResponse response, HttpSessionContext sessionContext) {
 
-        for (HttpFilterChain httpFilterChain : orderFilter) {
-            httpFilterChain.doFilter(request, response);
-            if (response.isDone()) {
-                sessionContext.write(response);
-                return;
-            }
-        }
+        firstFilter.doFilter(request, response);
     }
 
     @Override
@@ -47,6 +42,7 @@ public class HttpFilterDelegate implements AfterNetWorkContextInitialized {
             HttpFilterChain httpFilterChain = orderFilter.get(i);
             httpFilterChain.setNext(i == orderFilter.size() - 1 ? new HttpFilterChainImpl(empty) : orderFilter.get(i + 1));
         }
+        firstFilter = orderFilter.get(0);
     }
 
     private HttpFilter empty = new HttpFilter() {
