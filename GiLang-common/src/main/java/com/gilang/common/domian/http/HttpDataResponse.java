@@ -72,7 +72,7 @@ public class HttpDataResponse extends DataPackage<Object> {
     }
 
     public void write(int status, byte[] bytes) {
-        this.status = 200;
+        this.status = status;
         setPayload(bytes);
         this.done = true;
     }
